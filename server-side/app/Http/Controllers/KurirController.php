@@ -66,11 +66,41 @@ class KurirController extends Controller
         }
 
         // Mengambil barang yang dimiliki oleh Kurir berdasarkan ID Kurir
-        $barangKurir = Barang::where('id_kurir', $kurir->id_kurir)->get();
+        $barangKurir = Barang::where('id_kurir', $kurir->id_kurir)->where('status', 'berhasil')->get();
 
         return response()->json([
             'success' => true,
             'data' => $barangKurir
         ], 200);
-    } 
+    }
+
+    public function uploadFoto(Request $request, Barang $barang) {
+        
+        $data = [
+            'foto' => $request->foto,
+            'status' => 'berhasil'
+        ];
+    
+        $validator = Validator::make($data, [
+            'foto' => 'required|string'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+    
+        $barang = Barang::where('id_barang', $barang->id_barang)->first();
+    
+        if (!$barang) {
+            return response()->json(['message' => 'Barang not found'], 404);
+        }
+    
+        // Update the Barang with the provided photo and status
+        $barang->update($data);
+    
+        return response()->json([
+            'message' => 'Barang updated successfully',
+            'data' => $barang
+        ], 200);
+    }
 }

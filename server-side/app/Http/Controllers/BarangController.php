@@ -27,20 +27,21 @@ class BarangController extends Controller
      */
     public function adminDash()
     {
-        $barang = Barang::get([
-            'id_barang',
-            'id_suplier',
-            'id_kurir',
-            'nama_barang',
-            'jumlah_barang',
-            'nama_penerima',
-            'alamat_penerima',
-            'nohp_penerima',
-            'status',
-            'foto',
-            'created_at',
-            'updated_at',
-        ])->toArray();
+        $barang = Barang::with(['suplier:id_suplier,nama_suplier', 'kurir:id_kurir,nama_kurir'])
+            ->get([
+                'id_barang',
+                'id_suplier',
+                'id_kurir',
+                'nama_barang',
+                'jumlah_barang',
+                'nama_penerima',
+                'alamat_penerima',
+                'nohp_penerima',
+                'status',
+                'foto',
+                'created_at',
+                'updated_at',
+            ])->toArray();
 
         return response()->json([
             'success' => true,
@@ -50,7 +51,7 @@ class BarangController extends Controller
 
     public function pickKurir(Barang $barang) {
 
-        $barang = Barang::whereNull('id_kurir')->get();
+        $barang = Barang::whereNull('id_kurir')->with(['suplier:id_suplier,nama_suplier'])->get();
 
         if (!$barang) {
             return response()->json([
@@ -60,6 +61,23 @@ class BarangController extends Controller
 
         return response()->json([
             'succes' => true,
+            'data' => $barang
+        ], 200);
+    }
+
+    public function barangDone() {
+        $barang = Barang::where('status', 'berhasil')
+            ->with(['suplier:id_suplier,nama_suplier', 'kurir:id_kurir,nama_kurir'])
+            ->get();
+
+        if ($barang->isEmpty()) {
+            return response()->json([
+                'message' => 'Barang not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json([
+            'success' => true,
             'data' => $barang
         ], 200);
     }
