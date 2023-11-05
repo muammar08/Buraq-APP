@@ -6,7 +6,7 @@ use App\Models\Barang;
 use App\Models\Kurir;
 use App\Models\Suplier;
 use Illuminate\Http\Request;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
@@ -27,7 +27,7 @@ class BarangController extends Controller
      */
     public function adminDash()
     {
-        $barang = Barang::with(['suplier:id_suplier,nama_suplier', 'kurir:id_kurir,nama_kurir'])
+        $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
             ->get([
                 'id_barang',
                 'id_suplier',

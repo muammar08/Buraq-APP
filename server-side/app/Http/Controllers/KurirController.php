@@ -6,7 +6,7 @@ use App\Models\Barang;
 use App\Models\Kurir;
 use App\Models\Suplier;
 use Illuminate\Http\Request;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
@@ -66,7 +66,7 @@ class KurirController extends Controller
         }
 
         // Mengambil barang yang dimiliki oleh Kurir berdasarkan ID Kurir
-        $barangKurir = Barang::where('id_kurir', $kurir->id_kurir)->where('status', 'berhasil')->get();
+        $barangKurir = Barang::where('id_kurir', $kurir->id_kurir)->where('status', 'proses')->get();
 
         return response()->json([
             'success' => true,
@@ -75,32 +75,38 @@ class KurirController extends Controller
     }
 
     public function uploadFoto(Request $request, Barang $barang) {
-        
-        $data = [
-            'foto' => $request->foto,
-            'status' => 'berhasil'
-        ];
-    
-        $validator = Validator::make($data, [
-            'foto' => 'required|string'
+        $validator = Validator::make($request->all(), [
+            'foto' => 'image|mimes:jpeg,png,jpg,gif', // Adjust file type and size as needed
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-    
+
         $barang = Barang::where('id_barang', $barang->id_barang)->first();
-    
+
         if (!$barang) {
             return response()->json(['message' => 'Barang not found'], 404);
         }
-    
-        // Update the Barang with the provided photo and status
-        $barang->update($data);
-    
+
+        // Get the uploaded file
+        $uploadedFile = $request->file('foto');
+
+        // Generate a unique filename using a timestamp
+        $filename = time() . '.' . $uploadedFile->getClientOriginalExtension();
+
+        // Move the uploaded file to the public directory
+        $uploadedFile->move(public_path().'/img', $filename);
+
+        // Update the Barang with the new photo URL and status
+        $barang->update([
+            'foto' => $filename, // Specify the path to the public directory
+            'status' => 'berhasil'
+        ]);
+
         return response()->json([
             'message' => 'Barang updated successfully',
             'data' => $barang
         ], 200);
-    }
+    } 
 }

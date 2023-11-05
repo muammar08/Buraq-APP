@@ -6,7 +6,7 @@ use App\Models\Barang;
 use App\Models\Kurir;
 use App\Models\Suplier;
 use Illuminate\Http\Request;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;

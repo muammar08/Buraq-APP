@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use App\Models\Kurir;
 use App\Models\Suplier;
