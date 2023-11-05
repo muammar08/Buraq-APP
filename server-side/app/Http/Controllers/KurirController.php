@@ -21,10 +21,7 @@ class KurirController extends Controller
 
     public function getKurir() {
 
-        $kurir = Kurir::get([
-            'id_kurir',
-            'nama_kurir',
-        ])->toArray();
+        $kurir = Kurir::get()->toArray();
 
         return response()->json([
             'success' => true,
