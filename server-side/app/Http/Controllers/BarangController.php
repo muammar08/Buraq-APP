@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Kurir;
 use App\Models\Suplier;
+use App\Models\Admin;
+use App\Models\BarangSatuan;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -28,24 +30,21 @@ class BarangController extends Controller
     public function adminDash()
     {
         $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
-            ->get([
-                'id_barang',
-                'id_suplier',
-                'id_kurir',
-                'nama_barang',
-                'jumlah_barang',
-                'nama_penerima',
-                'alamat_penerima',
-                'nohp_penerima',
-                'status',
-                'foto',
-                'created_at',
-                'updated_at',
-            ])->toArray();
+            ->get()->toArray();
 
         return response()->json([
             'success' => true,
             'data' => $barang
+        ], 200);
+    }
+
+    public function adminDashSatuan() {
+
+        $satuan = BarangSatuan::get()->toArray();
+
+        return response()->json([
+            'success' =>true,
+            'data' => $satuan
         ], 200);
     }
 
@@ -92,6 +91,7 @@ class BarangController extends Controller
     {
         $data = [
             'id_suplier'      => $request->namaPerusahaan,
+            'no_resi'         => $request->noResi,
             'nama_barang'     => $request->namaBarang,
             'jumlah_barang'   => $request->jumlahBarang,
             'nama_penerima'   => $request->namaPenerima,
@@ -101,6 +101,7 @@ class BarangController extends Controller
 
         $validator = Validator::make($data, [
             'id_suplier'      => 'required|integer',
+            'no_resi'         => 'required|integer',
             'nama_barang'     => 'required|string',
             'jumlah_barang'   => 'required|string',
             'nama_penerima'   => 'required|string',
@@ -118,6 +119,42 @@ class BarangController extends Controller
             'success'  => true,
             'message'  => 'Barang Created',
             'data'     => $barang
+        ], 200);
+    }
+
+    public function storeSatuan(Request $request) {
+
+        $data = [
+            'no_resi_satuan'  => $request->noResiSatuan,
+            'nama_barang'     => $request->namaBarang,
+            'jumlah_barang'   => $request->jumlahBarang,
+            'nama_penerima'   => $request->namaPenerima,
+            'alamat_penerima' => $request->alamatPenerima,
+            'nohp_penerima'   => $request->nohpPenerima,
+            'pembayaran'      => $request->pembayaran,
+            'harga'           => $request->harga
+        ];
+
+        $validator = Validator::make($data, [
+            'no_resi_satuan'  => 'required|integer',
+            'nama_barang'     => 'required|string',
+            'jumlah_barang'   => 'required|string',
+            'nama_penerima'   => 'required|string',
+            'alamat_penerima' => 'required|string',
+            'nohp_penerima'   => 'required|string',
+            'pembayaran'      => 'required|string'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $satuan = BarangSatuan::create($data);
+
+        return response()->json([
+            'success'  => true,
+            'message'  => 'Barang Created',
+            'data'     => $satuan
         ], 200);
     }
 

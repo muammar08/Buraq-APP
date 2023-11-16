@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\KurirController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +29,17 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('getuser', [AuthController::class, 'getUser']);
     Route::post('registerkurir', [AuthController::class, 'registerKurir']);
     Route::post('registersuplier', [AuthController::class, 'registerSuplier']);
+    Route::post('registeradmin', [AuthController::class, 'registerAdmin']);
     Route::get('listbarang', [BarangController::class, 'adminDash']);
+    Route::get('listbarangsatuan', [BarangController::class, 'adminDashSatuan']);
     Route::get('getsuplier', [SuplierController::class, 'getSuplier']);
+    Route::get('getadmin', [AdminController::class, 'getAdmin']);
     Route::post('createbarang', [BarangController::class, 'store']);
+    Route::post('createbarangsatuan', [BarangController::class, 'storeSatuan']);
     Route::get('getkurir', [KurirController::class, 'getKurir']);
     Route::get('listforkurir', [BarangController::class, 'pickKurir']);
     Route::post('setkurir', [KurirController::class, 'setKurir']);
+    Route::post('setkurirsatuan', [KurirController::class, 'setKurirSatuan']);
     Route::get('riwayat', [BarangController::class, 'barangDone']);
 
     Route::get('listbarangkurir', [KurirController::class, 'kurirDash']);

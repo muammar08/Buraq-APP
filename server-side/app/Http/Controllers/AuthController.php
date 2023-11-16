@@ -7,6 +7,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\User;
 use App\Models\Kurir;
 use App\Models\Suplier;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
@@ -84,6 +85,42 @@ class AuthController extends Controller
             'message' => 'User Created Success',
             'data' => $user,
             'dataSuplier' => $suplier
+        ], 200);
+    }
+
+    public function registerAdmin(Request $request) {
+
+        $data = $request->only('username', 'roleId', 'password', 'adminDaerah', 'daerah');
+        $validator = Validator::make($data, [
+            'username' => 'required|string',
+            'roleId' => 'required|integer',
+            'password' => 'required|string|min:6|max:20',
+            'adminDaerah' => 'required|string',
+            'daerah' => 'required|string'
+        ]);
+
+        if($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 422);
+        }
+
+        $user = User::create([
+            'username' => $request->username,
+            'role_id' => $request->roleId,
+            'password' => bcrypt($request->password)
+        ]);
+
+        $admin = new Admin([
+            'admin_daerah' => $request->adminDaerah,
+            'daerah' => $request->daerah,
+        ]);
+
+        $user->admin()->save($admin);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User Created Success',
+            'data' => $user,
+            'dataAdmin' => $admin
         ], 200);
     }
 
