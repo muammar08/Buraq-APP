@@ -151,9 +151,6 @@ class AuthController extends Controller
 
     public function getUser(Request $request) {
 
-        $this->validate($request, [
-            'token' => 'required'
-        ]);
 
         try {
             $user = JWTAuth::authenticate($request->token);

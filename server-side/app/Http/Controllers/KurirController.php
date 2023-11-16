@@ -21,10 +21,7 @@ class KurirController extends Controller
 
     public function getKurir() {
 
-        $kurir = Kurir::get([
-            'id_kurir',
-            'nama_kurir',
-        ])->toArray();
+        $kurir = Kurir::get()->toArray();
 
         return response()->json([
             'success' => true,
@@ -76,7 +73,7 @@ class KurirController extends Controller
 
     public function uploadFoto(Request $request, Barang $barang) {
         $validator = Validator::make($request->all(), [
-            'foto' => 'image|mimes:jpeg,png,jpg,gif', // Adjust file type and size as needed
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:5000', // Adjust file type and size as needed
         ]);
 
         if ($validator->fails()) {

@@ -28,6 +28,7 @@ class BarangController extends Controller
     public function adminDash()
     {
         $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
+            ->where('status', 'proses')
             ->get([
                 'id_barang',
                 'id_suplier',
