@@ -13,21 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('barangs', function (Blueprint $table) {
-            $table->id('id_barang');
-            $table->unsignedBigInteger('id_suplier');
+        Schema::create('barang_satuans', function (Blueprint $table) {
+            $table->id('id_satuan');
             $table->unsignedBigInteger('id_kurir')->nullable();
-            $table->integer('no_resi')->unique();
+            $table->integer('no_resi_satuan')->unique();
             $table->string('nama_barang', 100);
             $table->string('jumlah_barang', 100);
             $table->string('nama_penerima', 100);
             $table->string('alamat_penerima', 100);
             $table->string('nohp_penerima', 100);
+            $table->string('pembayaran', 100);
+            $table->string('harga')->nullable();
             $table->string('status')->default('proses');
             $table->string('foto')->nullable();
             $table->timestamps();
 
-            $table->foreign('id_suplier')->references('id_suplier')->on('supliers');
             $table->foreign('id_kurir')->references('id_kurir')->on('kurirs');
         });
     }
@@ -39,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barangs');
+        Schema::dropIfExists('barang_satuans');
     }
 };

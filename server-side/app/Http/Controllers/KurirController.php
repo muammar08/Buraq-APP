@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Kurir;
 use App\Models\Suplier;
+use App\Models\BarangSatuan;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -47,6 +48,24 @@ class KurirController extends Controller
         ], 200);
     }
 
+    public function setKurirSatuan(Request $request) {
+
+        $validator = $this->validate($request, [
+            'id_kurir' => 'required|integer',
+            'select' => 'required|array',
+        ]);
+
+        $kurir = $request->id_kurir;
+        $selected = $request->select;
+
+        BarangSatuan::whereIn('id_satuan', $selected)->update(['id_kurir' => $kurir]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Success Update'
+        ], 200);
+    }
+
     public function kurirDash(Request $request) {
         // Mendapatkan user ID dari user yang login
         $user = auth()->user();
@@ -64,10 +83,12 @@ class KurirController extends Controller
 
         // Mengambil barang yang dimiliki oleh Kurir berdasarkan ID Kurir
         $barangKurir = Barang::where('id_kurir', $kurir->id_kurir)->where('status', 'proses')->get();
+        $satuanKurir = BarangSatuan::where('id_kurir', $kurir->id_kurir)->where('status', 'proses')->get();
 
         return response()->json([
             'success' => true,
-            'data' => $barangKurir
+            'data' => $barangKurir,
+            'dataSatuan' => $satuanKurir
         ], 200);
     }
 
@@ -81,8 +102,13 @@ class KurirController extends Controller
         }
 
         $barang = Barang::where('id_barang', $barang->id_barang)->first();
+        $satuan = BarangSatuan::where('id_satuan', $satuan->id_satuan)->first();
 
         if (!$barang) {
+            return response()->json(['message' => 'Barang not found'], 404);
+        }
+
+        if (!$satuan) {
             return response()->json(['message' => 'Barang not found'], 404);
         }
 
@@ -101,9 +127,15 @@ class KurirController extends Controller
             'status' => 'berhasil'
         ]);
 
+        $satuan->update([
+            'foto' => $filename,
+            'status' => 'berhasil'
+        ]);
+
         return response()->json([
             'message' => 'Barang updated successfully',
-            'data' => $barang
+            'data' => $barang,
+            'dataSatuan' => $satuan
         ], 200);
     } 
 }

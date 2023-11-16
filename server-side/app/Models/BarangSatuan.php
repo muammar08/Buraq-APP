@@ -5,28 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Barang extends Model
+class BarangSatuan extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_barang';
+
+    protected $primaryKey = 'id_satuan';
 
     protected $fillable = [
-        'id_suplier',
         'id_kurir',
-        'no_resi',
+        'no_resi_satuan',
         'nama_barang',
         'jumlah_barang',
         'nama_penerima',
         'alamat_penerima',
         'nohp_penerima',
+        'pembayaran',
+        'harga',
         'status',
         'foto',
     ];
-
-    public function suplier()
-    {
-        return $this->belongsTo(Suplier::class, 'id_suplier', 'id_suplier');
-    }
 
     public function kurir()
     {

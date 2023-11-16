@@ -54,4 +54,8 @@ class User extends Authenticatable implements JWTSubject
     public function kurir() {
         return $this->hasOne(Kurir::class, 'id_user');
     }
+
+    public function admin() {
+        return $this->hasOne(Admin::class, 'id_user');
+    }
 }
