@@ -7,6 +7,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\KurirController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ResiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ use App\Http\Controllers\AdminController;
 //     return $request->user();
 // });
 Route::post('login', [AuthController::class, 'login']);
+Route::post('cekresi', [ResiController::class, 'cekResi']);
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('logout', [AuthController::class, 'logout']);
