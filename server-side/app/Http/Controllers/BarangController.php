@@ -109,7 +109,8 @@ class BarangController extends Controller
             'jumlah_barang'   => $request->jumlahBarang,
             'nama_penerima'   => $request->namaPenerima,
             'alamat_penerima' => $request->alamatPenerima,
-            'nohp_penerima'   => $request->nohpPenerima
+            'nohp_penerima'   => $request->nohpPenerima,
+            'daerah_barang'   => $request->daerahBarang
         ];
 
         $validator = Validator::make($data, [
@@ -119,7 +120,8 @@ class BarangController extends Controller
             'jumlah_barang'   => 'required|string',
             'nama_penerima'   => 'required|string',
             'alamat_penerima' => 'required|string',
-            'nohp_penerima'   => 'required|string'
+            'nohp_penerima'   => 'required|string',
+            'daerah_barang'   => 'required|string',
         ]);
 
         if($validator->fails()) {
@@ -144,6 +146,7 @@ class BarangController extends Controller
             'nama_penerima'   => $request->namaPenerima,
             'alamat_penerima' => $request->alamatPenerima,
             'nohp_penerima'   => $request->nohpPenerima,
+            'daerah_satuan'   => $request->daerahSatuan,
             'pembayaran'      => $request->pembayaran,
             'harga'           => $request->harga
         ];
@@ -155,7 +158,8 @@ class BarangController extends Controller
             'nama_penerima'   => 'required|string',
             'alamat_penerima' => 'required|string',
             'nohp_penerima'   => 'required|string',
-            'pembayaran'      => 'required|string'
+            'pembayaran'      => 'required|string',
+            'daerah_satuan'   => 'required|string'
         ]);
 
         if($validator->fails()) {

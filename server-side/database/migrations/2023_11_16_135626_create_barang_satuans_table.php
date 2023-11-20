@@ -21,7 +21,8 @@ return new class extends Migration
             $table->string('jumlah_barang', 100);
             $table->string('nama_penerima', 100);
             $table->string('alamat_penerima', 100);
-            $table->string('nohp_penerima', 100);
+            $table->string('nohp_penerima', 100)->nullable();
+            $table->string('daerah_satuan', 100);
             $table->string('pembayaran', 100);
             $table->string('harga')->nullable();
             $table->string('status')->default('proses');

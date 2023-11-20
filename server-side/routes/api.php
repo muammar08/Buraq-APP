@@ -34,6 +34,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('listbarangsatuan', [BarangController::class, 'adminDashSatuan']);
     Route::get('getsuplier', [SuplierController::class, 'getSuplier']);
     Route::get('getadmin', [AdminController::class, 'getAdmin']);
+    Route::get('listdaerah', [AdminController::class, 'adminDaerah']);
+    Route::get('listdaerahsatuan', [AdminController::class, 'adminDaerahSatuan']);
     Route::post('createbarang', [BarangController::class, 'store']);
     Route::post('createbarangsatuan', [BarangController::class, 'storeSatuan']);
     Route::get('getkurir', [KurirController::class, 'getKurir']);
