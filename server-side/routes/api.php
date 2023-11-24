@@ -48,5 +48,6 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
     Route::get('listbarangkurir', [KurirController::class, 'kurirDash']);
     Route::post('upfoto/{barang}', [KurirController::class, 'uploadFoto']);
+    Route::post('upfotosatuan/{barang}', [KurirController::class, 'uploadFotoSatuan']);
     Route::get('listbarangsuplier', [SuplierController::class, 'suplierDash']);
 });

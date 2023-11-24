@@ -30,20 +30,7 @@ class BarangController extends Controller
     public function adminDash()
     {
         $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
-            ->get([
-                'id_barang',
-                'id_suplier',
-                'id_kurir',
-                'nama_barang',
-                'jumlah_barang',
-                'nama_penerima',
-                'alamat_penerima',
-                'nohp_penerima',
-                'status',
-                'foto',
-                'created_at',
-                'updated_at',
-            ])->toArray();
+            ->get()->toArray();
 
         return response()->json([
             'success' => true,
@@ -120,7 +107,6 @@ class BarangController extends Controller
             'jumlah_barang'   => 'required|string',
             'nama_penerima'   => 'required|string',
             'alamat_penerima' => 'required|string',
-            'nohp_penerima'   => 'required|string',
             'daerah_barang'   => 'required|string',
         ]);
 
@@ -157,7 +143,6 @@ class BarangController extends Controller
             'jumlah_barang'   => 'required|string',
             'nama_penerima'   => 'required|string',
             'alamat_penerima' => 'required|string',
-            'nohp_penerima'   => 'required|string',
             'pembayaran'      => 'required|string',
             'daerah_satuan'   => 'required|string'
         ]);

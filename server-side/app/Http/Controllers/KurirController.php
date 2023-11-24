@@ -102,13 +102,8 @@ class KurirController extends Controller
         }
 
         $barang = Barang::where('id_barang', $barang->id_barang)->first();
-        $satuan = BarangSatuan::where('id_satuan', $satuan->id_satuan)->first();
 
         if (!$barang) {
-            return response()->json(['message' => 'Barang not found'], 404);
-        }
-
-        if (!$satuan) {
             return response()->json(['message' => 'Barang not found'], 404);
         }
 
@@ -127,6 +122,37 @@ class KurirController extends Controller
             'status' => 'berhasil'
         ]);
 
+        return response()->json([
+            'message' => 'Barang updated successfully',
+            'data' => $barang,
+        ], 200);
+    } 
+
+    public function uploadFotoSatuan(Request $request, BarangSatuan $satuan) {
+        $validator = Validator::make($request->all(), [
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:5000', // Adjust file type and size as needed
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $satuan = BarangSatuan::where('id_satuan', $satuan->id_satuan)->first();
+
+        if (!$satuan) {
+            return response()->json(['message' => 'Barang not found'], 404);
+        }
+
+        // Get the uploaded file
+        $uploadedFile = $request->file('foto');
+
+        // Generate a unique filename using a timestamp
+        $filename = time() . '.' . $uploadedFile->getClientOriginalExtension();
+
+        // Move the uploaded file to the public directory
+        $uploadedFile->move(public_path().'/img', $filename);
+
+        // Update the Barang with the new photo URL and status
         $satuan->update([
             'foto' => $filename,
             'status' => 'berhasil'
@@ -134,8 +160,7 @@ class KurirController extends Controller
 
         return response()->json([
             'message' => 'Barang updated successfully',
-            'data' => $barang,
-            'dataSatuan' => $satuan
+            'data' => $satuan,
         ], 200);
     } 
 }
