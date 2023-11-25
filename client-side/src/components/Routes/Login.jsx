@@ -23,6 +23,8 @@ function Login() {
         if (response.data.data.role_id === 1) {
             window.location.href = '/dashboardAdmin';
         } else if (response.data.data.role_id === 2) {
+            window.location.href = '/dashboardAdminDaerah';
+        } else if (response.data.data.role_id === 3) {
             window.location.href = '/dashboardSuplier';
         } else {
             window.location.href = '/dashboardKurir';

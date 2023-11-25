@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Button, Card, Container, Navbar, NavbarCollapse, Form, Row, Col} from 'react-bootstrap';
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
+import { GoogleMap, Marker, LoadScript, InfoWindow } from '@react-google-maps/api';
 import truck from '../../assets/truck.png'
 import icon1 from '../../assets/icon1.png'
 import icon2 from '../../assets/icon2.png'
@@ -10,6 +11,10 @@ import foto1 from '../../assets/foto1.jpg'
 import foto2 from '../../assets/foto2.jpg'
 import foto3 from '../../assets/foto3.jpg'
 import foto4 from '../../assets/foto4.jpg'
+import orang1 from '../../assets/orang1.jpg'
+import orang2 from '../../assets/orang2.jpg'
+import orang3 from '../../assets/orang3.jpg'
+import '../../css/style.css'
 
 
 function LandingPage () {
@@ -53,11 +58,11 @@ function LandingPage () {
             </div>
 
             <div className='p-5 mb-4' style={sectionStyle2}>
-                <div className='py-5 '>
-                    <div className=' mx-auto text-end'>
+                <div className='py-5 mt-3 mb-3 '>
+                    <div className=' mx-auto text-end mt-5 mb-5'>
                         <h1 className='fw-bold text-light justify-content-center align-items-center text-center text-sm-end'>Create Meaningful</h1>
                         <h1 className='fw-bold text-light justify-content-center align-items-center text-center text-sm-end'>Experiences for Supplier.</h1>
-                        <p className='lead text-light justify-content-center align-items-center text-center text-sm-end'>Focus people by understanding emotions and perspectives at all touch points,<br/> so you can take action and focus experiences on what matters to the people.</p>
+                        <p className='lead fw-light text-light justify-content-center align-items-center text-center text-sm-end'>Focus people by understanding emotions and perspectives at all touch points,<br/> so you can take action and focus experiences on what matters to the people.</p>
                     </div>
                 </div>
             </div> 
@@ -80,7 +85,7 @@ function Nav () {
                 <Container>
                     <Navbar.Brand href="#home" className='text-white'> BURAQ </Navbar.Brand>
                     <NavbarCollapse className="justify-content-end"> 
-                        <Button href='/'>Login</Button>
+                        <Button href='/login'>Login</Button>
                     </NavbarCollapse>
                 </Container>
             </Navbar>
@@ -114,7 +119,7 @@ function About() {
                 <Row>
                     <Col xs={12} sm={6} className='d-flex justify-content-center align-items-center text-center text-sm-start'>
                         <div className='mt-5 mb-5'>
-                            <h4 className='fw-light' style={{color: '#2a9d8f'}} >Our Journey</h4>
+                            <h4 className='fw-light' style={{color: '#e63946'}} >Our Journey</h4>
                             <h1 className='fw-bold text-black'>About Company</h1>
                             <p className='mt-5'>Ut enim ad dolore magna aliqua minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
                         </div>
@@ -165,12 +170,22 @@ function OurGallery() {
     const handlePrevious = () => {
       setCurrentIndex((prevIndex) => (prevIndex - 1 + totalImages) % totalImages);
     };
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+          handleNext();
+        }, 3000); // Interval slide otomatis, ganti sesuai kebutuhan
+    
+        return () => {
+          clearInterval(interval);
+        };
+      }, [currentIndex]);
 
 
     return(
         <div>
         <Container className='p-1 mt-5'>
-          <p className='d-flex justify-content-center text-decoration-underline fw-bold' style={{ color: '#2a9d8f' }}>CheckOut</p>
+          <p className='d-flex justify-content-center text-decoration-underline fw-bold' style={{ color: '#e63946' }}>CheckOut</p>
           <h1 className='fw-bold text-center text-black'>Our Gallery</h1>
           <p className='text-center p-1'>Lorem ipsum dolor sit amet, iracundia porro an vix. Epicuri insolens ex meli persius detracto partem habemus.</p>
           <Row className='d-flex justify-content-center align-items-center'>
@@ -260,7 +275,7 @@ function OurServices(){
     return(
         <div>
             <Container className='p-1 mt-5'>
-                <p className='d-flex justify-content-center text-decoration-underline fw-bold' style={{color: '#2a9d8f'}}>Incredibly</p>
+                <p className='d-flex justify-content-center text-decoration-underline fw-bold' style={{color: '#e63946'}}>Incredibly</p>
                 <h1 className='fw-bold text-center text-black'>Our Services</h1>
                 <p className='text-center p-1'>Sed ut perspiciatis aperiam unde omnis istetus error <br/> volupta dolorem que laudantium, totam rem.</p>
                 <Row className='d-flex justify-content-center mt-3'>
@@ -306,29 +321,48 @@ function OurServices(){
     )
 }
 
-function Map(){
-    return(
-        <div>
-            {/* Create Map From API Google Maps, Show Buraq Cargo Location */}
-            <Container className='p-1 mt-5'>
-                <p className='d-flex justify-content-center text-decoration-underline fw-bold' style={{color: '#2a9d8f'}}>Find Out Our</p>
-                <h1 className='fw-bold text-center text-black'>Our Location</h1>
-                <p className='text-center p-1'>Sed ut perspiciatis aperiam unde omnis istetus error <br/> volupta dolorem que laudantium, totam rem.</p>
 
-                <Row className='d-flex justify-content-center'>
-                    <Col className='col-8 col-md-6 mt-2'>
-                        <Card>
-                            <Card.Body>
-                                // Create Map From API Google Maps, Show Buraq Cargo Location
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
+const Map = () => {
+    const mapContainerStyle = {
+      width: '100%',
+      height: '500px',
+    };
+  
+    const center = {
+      lat: 5.549537015599133, // Replace with the latitude of Buraq Cargo
+      lng: 95.33336878340403 // Replace with the longitude of Buraq Cargo
+    };
+    
 
-            </Container>
-        </div>
-    )
-}
+
+    return (
+      <div>
+        <Container className='p-1 mt-5 mb-5'>
+          <p className='d-flex justify-content-center text-decoration-underline fw-bold' style={{ color: '#e63946' }}>
+            Find Out Our
+          </p>
+          <h1 className='fw-bold text-center text-black'>Our Location</h1>
+          <p className='text-center p-1'>
+            Sed ut perspiciatis aperiam unde omnis istetus error <br />
+            volupta dolorem que laudantium, totam rem.
+          </p>
+          <Row className='d-flex justify-content-center mb-3'>
+            <Col className='col-sm-10 mt-2'>
+              <Card>
+                <Card.Body>
+                  <LoadScript googleMapsApiKey="AIzaSyA4v2vaF4xFafovUi73xGhClUfw-IzgymU">
+                    <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={18}>
+                      <Marker position={center} />
+                    </GoogleMap>
+                  </LoadScript>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  };
 
 function Service(){
     return(
@@ -339,7 +373,7 @@ function Service(){
                     </Col>
                     <Col xs={12} md={6} className='text-light d-flex align-items-center' style={{backgroundColor: '#1d3557'}}>
                         <div className='p-5'>
-                            <p className='text-decoration-underline fw-bold' style={{color: '#2a9d8f'}}>Services</p>
+                            <p className='text-decoration-underline fw-bold' style={{color: '#e63946'}}>Services</p>
                             <h3 className='fw-bold mt-3 mb-3'>Always Deliver Excellent Service</h3>
                             <p className='fw-light'>Lorem ipsum incididunt ut labore et dolore magna aliqua dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. <br/>Ut enim ad dolore magna aliqua minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
                         </div>
@@ -359,14 +393,14 @@ function Team(){
         <div>
             <Container className='p-5'>
                 <div className='mt-5'>
-                    <p style={{color:'#2a9d8f'}} className='fw-bold text-decoration-underline'>Dedicated Team </p>
+                    <p style={{color:'#e63946'}} className='fw-bold text-decoration-underline'>Dedicated Team </p>
                     <h1 className='fw-bold mb-5 '>Professional Individuals</h1>
                 </div>
                 <Row className='d-flex justify-content-center mb-5'>
                     <Col className='col-8 col-md-4 mt-2'>
                         <Card.Body style={{ padding: '0', position: 'relative' }}>
                             <Card.Img 
-                                src={foto1} 
+                                src={orang1} 
                                 style={{ 
                                     maxHeight: '350px', 
                                     objectFit: 'cover', 
@@ -388,7 +422,7 @@ function Team(){
                     <Col className='col-8 col-md-4 mt-2'>
                         <Card.Body style={{ padding: '0', position: 'relative' }}>
                             <Card.Img 
-                                src={foto2} 
+                                src={orang2} 
                                 style={{ 
                                     maxHeight: '350px', 
                                     objectFit: 'cover', 
@@ -410,7 +444,7 @@ function Team(){
                     <Col className='col-8 col-md-4 mt-2'>
                         <Card.Body style={{ padding: '0', position: 'relative' }}>
                             <Card.Img 
-                                src={foto3} 
+                                src={orang3} 
                                 style={{ 
                                     maxHeight: '350px', 
                                     objectFit: 'cover', 

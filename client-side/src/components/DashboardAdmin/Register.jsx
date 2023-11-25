@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
-import { MDBInput } from 'mdb-react-ui-kit';
+import {MDBInput } from 'mdb-react-ui-kit';
 import { Button, ButtonGroup, Form } from 'react-bootstrap';
 import axios from 'axios'; // Impor Axios untuk melakukan permintaan HTTP
 import Swal from 'sweetalert2';
+import Select from 'react-select';
 
 // const isAuthenticated = () => {
 //   const token = localStorage.getItem('token');
@@ -11,8 +12,49 @@ import Swal from 'sweetalert2';
 // }
 
 function Register() {
+
+    const [daerahOptions, setDaerahOptions] = useState([
+        'Kabupaten Aceh Barat',
+        'Kabupaten Aceh Barat Daya',
+        'Kabupaten Aceh Besar',
+        'Kabupaten Aceh Jaya',
+        'Kabupaten Aceh Selatan',
+        'Kabupaten Aceh Singkil',
+        'Kabupaten Aceh Tamiang',
+        'Kabupaten Aceh Tengah',
+        'Kabupaten Aceh Tenggara',
+        'Kabupaten Aceh Timur',
+        'Kabupaten Aceh Utara',
+        'Kabupaten Bener Meriah',
+        'Kabupaten Bireuen',
+        'Kabupaten Gayo Lues',
+        'Kabupaten Nagan Raya',
+        'Kabupaten Pidie',
+        'Kabupaten Pidie Jaya',
+        'Kabupaten Simeulue',
+        'Kota Banda Aceh',
+        'Kota Langsa',
+        'Kota Lhokseumawe',
+        'Kota Sabang',
+        'Kota Subulussalam',
+    ]); // State untuk menyimpan daftar daerah
+
+    const [selectedDaerah, setSelectedDaerah] = useState(null);
+
+    const handleDaerahChange = (selectedOption) => {
+        setSelectedDaerah(selectedOption);
+        console.log(`Selected: ${selectedOption.label}`);
+    };
+
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            minWidth: 200,
+            margin: '8px 0',
+        }),
+    };
   
-    const [userData, setUserData] = useState(null); // State untuk menyimpan data pengguna
+   const [userData, setUserData] = useState(null); // State untuk menyimpan data pengguna
 
    const [registrationType, setRegistrationType] = useState('Kurir');
 
@@ -23,13 +65,16 @@ function Register() {
     const token = localStorage.getItem('token');    
 
     const [username, setUsername] = useState('');
-    const [namaSuplier, setNamaSuplier] = useState('');
-    const [roleIdSuplier, setRoleIdSuplier] = useState(2);
-    const [roleIdKurir, setRoleIdKurir] = useState(3);
     const [password, setPassword] = useState('');
+    const [roleIdAdmin, setRoleIdAdmin] = useState(2);
+    const [roleIdSuplier, setRoleIdSuplier] = useState(3);
+    const [roleIdKurir, setRoleIdKurir] = useState(4);
+    const [namaSuplier, setNamaSuplier] = useState('');
     const [namaKurir, setNamaKurir] = useState('');
     const [nohpKurir, setNoHpKurir] = useState('');
     const [alamatKurir, setAlamatKurir] = useState('');
+    const [adminDaerah, setAdminDaerah] = useState('');
+    const [daerah, setDaerah] = useState('');
 
     const handleRegistSuplier = async (e) => {
         e.preventDefault();
@@ -118,6 +163,49 @@ function Register() {
         }
     }
 
+    const handleRegistAdminDaerah = async (e) => {
+        e.preventDefault();
+
+        if (password.length < 6 || password.length > 20) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Password',
+                text: 'Password must be between 6 and 20 characters.',
+            });
+            return;
+        }
+
+        try {
+            const response = await axios.post('http://127.0.0.1:8000/api/registeradmin', {
+                username: username,
+                roleId: roleIdAdmin,
+                password: password,
+                adminDaerah: adminDaerah,
+                daerah: daerah,
+                }, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(response);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Data berhasil disimpan',
+                showConfirmButton: false,
+                timer: 1000,
+              });
+        
+            
+              setTimeout(() => {
+                window.location.reload();
+            }, 1001);
+
+        } catch (error) {
+            console.error('Error', error);
+        }
+    }
+
   return (
     <div style={{ display: 'flex' }}>
         <Sidebar />
@@ -146,6 +234,13 @@ function Register() {
                     >
                         Suplier
                     </Button>
+                    <Button 
+                        onClick={() => handleRegistrationTypeChange('Admin Daerah')}
+                        variant={registrationType === 'Admin Daerah' ? 'primary' : 'secondary'}
+                        style={{ backgroundColor: registrationType === 'Admin Daerah' ? '#1d3357' : '' }}
+                    >
+                        Admin Daerah
+                    </Button>
                 </ButtonGroup>
             </div>
             <div>
@@ -172,6 +267,34 @@ function Register() {
                         <MDBInput className='mb-4' label='No HP Kurir' id='nohpKurir' name='nohpKurir' type='text' onChange={(e) => setNoHpKurir(e.target.value)}/>
                         <MDBInput className='mb-4' label='Alamat Kurir' id='alamatKurir' name='alamatKurir' type='text' onChange={(e) => setAlamatKurir(e.target.value)}/>
                         <MDBInput className='mb-5' label='Password' id='password' type='password' onChange={(e) => setPassword(e.target.value)}/>
+                        <div className="text-end">
+                            <Button className="fw-bold pt-3 pb-3 ps-4 pe-4 rounded-pill" type="submit" style={{ background: '#1d3557' }}>
+                                Simpan Data
+                            </Button>
+                        </div>
+                    </Form>
+                )}
+                {registrationType === 'Admin Daerah' && (
+                    <Form className='pt-3 ps-5 pe-5' onSubmit={handleRegistAdminDaerah}>
+                        <h2>Register Suplier</h2>
+                        <MDBInput className='mb-4 mt-4' label='Nama Admin Daerah' id='' name='adminDaerah' type='text' onChange={(e)=> setAdminDaerah(e.target.value)}/>
+                        <MDBInput className='mb-4' label='Username' id='username' name='username' type='text' onChange={(e) => setUsername(e.target.value)}/>
+                        <MDBInput className='mb-4' label='Password' id='password' name='password' type='password' onChange={(e) => setPassword(e.target.value)}/>
+                        <input name='roleId' type='text' id='roleId' hidden onChange={(e) => setRoleIdAdmin(e.target.value)} />
+                        <Select
+                            options={daerahOptions.map((daerah, index) => ({
+                                label: daerah,
+                                value: index,
+                            }))}
+                            className='mb-4'
+                            value={selectedDaerah}
+                            onChange={handleDaerahChange}
+                            placeholder="Pilih Daerah"
+                            styles={customStyles}
+                            isClearable
+                            isSearchable
+                        />
+
                         <div className="text-end">
                             <Button className="fw-bold pt-3 pb-3 ps-4 pe-4 rounded-pill" type="submit" style={{ background: '#1d3557' }}>
                                 Simpan Data

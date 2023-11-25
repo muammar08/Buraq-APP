@@ -1,0 +1,43 @@
+.sidebar {
+    position: fixed;
+    height: 100vh; /* Menggunakan tinggi layar penuh */
+    width: 230px; /* Atur lebar sidebar sesuai kebutuhan *//* Tambahkan overflow-y jika konten lebih panjang dari tinggi sidebar */
+    transition: width 0.1s ease; /* Efek transisi lebar sidebar */
+    z-index: 1000; /* Atur z-index agar sidebar tetap di depan konten */
+    background-color: #1d3557;
+  }
+  
+  .content {
+    margin-left: 240px; /* Sesuaikan margin content agar tidak tertutup sidebar */
+    transition: margin-left 0.1s ease; /* Efek transisi saat mengubah margin */
+  }
+
+  
+  .sidebar.open {
+    width: 60px; /* Lebar sidebar ketika mengecil */
+    transition: width 0.1s ease-out; /* Animasi transisi lebar sidebar */
+  }
+
+  .sidebar.open + .content {
+    margin-left: 50px; /* Sesuaikan margin konten saat sidebar mengecil */
+  }
+
+
+  .text-whites {
+    color: #fff;
+  }
+
+ .text-whites:hover {
+    background-color: #324766; /* Ubah warna latar belakang saat hover */
+    /* Tambahkan efek lain yang Anda inginkan saat pointer dihover */
+  }
+  
+  @media screen and (max-width: 768px) {
+    .sidebar {
+      width: 230px; /* Atur lebar sidebar pada layar mobile */
+    }
+  
+    .sidebar.open {
+      width: 50px; /* Jika sidebar sedang terbuka pada layar mobile */
+    }
+  }
