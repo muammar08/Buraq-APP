@@ -10,6 +10,7 @@ const Sidebar = () => {
   const [isCollapsed1, setIsCollapsed1] = useState(false); // State to manage collapse
   const [isCollapsed2, setIsCollapsed2] = useState(false); // State to manage collapse
   const [isCollapsed3, setIsCollapsed3] = useState(false); // State to manage collapse
+  const [isCollapsed4, setIsCollapsed4] = useState(false); // State to manage collapse
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const toggleCollapse1 = () => {
@@ -20,6 +21,9 @@ const Sidebar = () => {
   };
   const toggleCollapse3 = () => {
     setIsCollapsed3(!isCollapsed3); // Function to toggle collapse state
+  };
+  const toggleCollapse4 = () => {
+    setIsCollapsed4(!isCollapsed4); // Function to toggle collapse state
   };
   const toggleSidebar = () => {
     setIsSidebarOpen(prevState => !prevState);
@@ -79,8 +83,18 @@ const Sidebar = () => {
                       </ul>
                   </Collapse>
                   </div>
+                  <div>
+                  <NavLink className="mb-1 text-black" onClick={toggleCollapse4}>
+                      {isCollapsed4 ? <div className="bi-caret-down mt-3 container text-whites rounded-end ps-4"> Pilih Kurir </div> : <div className="bi-caret-right mt-3 container text-whites ps-4"> Pilih Kurir </div>}
+                  </NavLink>
+                  <Collapse in={isCollapsed4} className="ms-5" id="home-collapse">
+                      <ul className="list-unstyled fw-normal pb-1 small">
+                      <li className='mt-2 text-whites'><NavLink to="/pilihKurir" className="text-white rounded">Barang Suplier</NavLink></li>
+                      <li className='mt-2 text-whites'><NavLink to="/pilihKurirPerorang" className="text-white rounded">Barang Perorang</NavLink></li>
+                      </ul>
+                  </Collapse>
+                  </div>
               
-                  <NavLink to='/pilihKurir'><p className='mt-3 ps-4 bi-box-seam text-whites'>&ensp; Pilih Kurir</p></NavLink>
                   <NavLink to='/riwayat'><p className='mt-3 ps-4 bi-calendar2-check text-whites'>&ensp; Riwayat</p></NavLink>
                   <NavLink to='/register'><p className='mt-3 ps-4 bi-person-add text-whites'>&ensp; Register</p></NavLink>
                   <li className='border-top mt-4'></li>  

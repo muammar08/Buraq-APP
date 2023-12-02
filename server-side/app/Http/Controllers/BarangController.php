@@ -64,6 +64,22 @@ class BarangController extends Controller
         ], 200);
     }
 
+    public function pickKurirSatuan(BarangSatuan $barangSatuans) {
+
+        $barangSatuans = BarangSatuan::whereNull('id_kurir')->get();
+
+        if (!$barangSatuans) {
+            return response()->json([
+                'message' => 'Barang not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json([
+            'succes' => true,
+            'data' => $barangSatuans
+        ], 200);
+    }
+
     public function barangDone() {
         $barang = Barang::where('status', 'berhasil')
             ->with(['suplier:id_suplier,nama_suplier', 'kurir:id_kurir,nama_kurir'])
@@ -114,13 +130,24 @@ class BarangController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         }
 
-        $barang = Barang::create($data);
+        $existingResi = Barang::where('no_resi', $request->noResi)->first();
 
-        return response()->json([
-            'success'  => true,
-            'message'  => 'Barang Created',
-            'data'     => $barang
-        ], 200);
+        if ($existingResi) {
+            return response()->json([
+                'success' => false,
+                'resiExists' => true,
+                'message' => 'Nomor Resi Sudah Ada'
+            ], 400);
+        } else {
+
+            $barang = Barang::create($data);
+
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Barang Created',
+                'data'     => $barang
+            ], 200);
+        }
     }
 
     public function storeSatuan(Request $request) {
@@ -151,13 +178,23 @@ class BarangController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         }
 
-        $satuan = BarangSatuan::create($data);
+        $existingResi = BarangSatuan::where('no_resi_satuan', $request->noResiSatuan)->first();
 
-        return response()->json([
-            'success'  => true,
-            'message'  => 'Barang Created',
-            'data'     => $satuan
-        ], 200);
+        if ($existingResi) {
+            return response()->json([
+                'success' => false,
+                'resiExists' => true,
+                'message' => 'Nomor Resi Sudah Ada'
+            ], 400);
+        } else {
+            $satuan = BarangSatuan::create($data);
+
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Barang Created',
+                'data'     => $satuan
+            ], 200);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Barang;
 use App\Models\Kurir;
 use App\Models\Suplier;
@@ -11,6 +12,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class KurirController extends Controller
 {
@@ -27,6 +29,22 @@ class KurirController extends Controller
         return response()->json([
             'success' => true,
             'data' => $kurir
+        ], 200);
+    }
+
+    public function getKurirAdminDaerah() {
+
+        $authenticatedAdmin = Auth::user();
+
+        // Retrieve barang data based on the daerah of the authenticated admin
+        $kurir = Kurir::join('admins', 'kurirs.alamat_kurir', '=', 'admins.daerah')
+            ->where('admins.id_user', $authenticatedAdmin->id)
+            ->select('kurirs.*')
+            ->get()->toArray();
+
+        return response()->json([
+            'success' => true,
+            'data' => $kurir,
         ], 200);
     }
 

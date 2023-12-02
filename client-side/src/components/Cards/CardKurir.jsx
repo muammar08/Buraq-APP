@@ -167,7 +167,7 @@ function CardKurir({searchTerm = ''}) {
           </Card>
         ))
       ) : (
-        <h4>{ searchTerm ? 'Tidak ada data yang cocok' : 'tidak ada data'}</h4>
+        <h4></h4>
       )}
       {filteredDataSatuan.length > 0 ? (
         filteredDataSatuan.map((data, index) => (
@@ -176,7 +176,16 @@ function CardKurir({searchTerm = ''}) {
             <Row>
                 <Col >
                     <Card.Body>
-                        <Card.Text className='fw-bold fs-5 mb-1'>{data.nama_barang}</Card.Text>
+                      
+                        <Card.Text className='fw-bold fs-5 mb-1'>{data.nama_barang} &ensp;
+                          {data.pembayaran === 'Lunas' ? (
+                            <Button className='p-1 fw-bold fs-7 bg-success shadow-lg rounded-pill'>Lunas</Button>
+                          ) : data.pembayaran === 'COD' ? (
+                              <Button className='p-1 fw-bold fs-7 bg-warning shadow-lg rounded-pill'>COD</Button>
+                          ) : null // Handle other status as needed  
+                          }
+                          <Card.Text>{data.harga}</Card.Text>
+                        </Card.Text>
                         <Card.Text className='mb-1'>{data.nama_penerima}</Card.Text>
                         <Card.Text className='mb-1'>{data.nohp_penerima}</Card.Text>
                         <Card.Text className='mb-1'>{data.alamat_penerima}</Card.Text>
@@ -187,7 +196,7 @@ function CardKurir({searchTerm = ''}) {
           </Card>
         ))
       ) : (
-        <h4>{ searchTerm ? 'Tidak ada data yang cocok' : 'tidak ada data'}</h4>
+        <h4></h4>
       )}
     
     <Modal show={showModal} onHide={handleCloseModal} centered>

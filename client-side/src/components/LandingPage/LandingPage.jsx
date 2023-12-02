@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Button, Card, Container, Navbar, NavbarCollapse, Form, Row, Col} from 'react-bootstrap';
+import { Button, Card, Container, Navbar, NavbarCollapse, Form, Row, Col, Modal} from 'react-bootstrap';
 import { BsArrowLeftCircleFill, BsArrowRightCircleFill } from 'react-icons/bs';
 import { GoogleMap, Marker, LoadScript, InfoWindow } from '@react-google-maps/api';
 import truck from '../../assets/truck.png'
@@ -15,6 +15,8 @@ import orang1 from '../../assets/orang1.jpg'
 import orang2 from '../../assets/orang2.jpg'
 import orang3 from '../../assets/orang3.jpg'
 import '../../css/style.css'
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 
 function LandingPage () {
@@ -93,24 +95,95 @@ function Nav () {
     )
 }
 
-function CardResi () {
-    return(
+function CardResi() {
+    const [data, setData] = useState([]);
+    const [noResi, setNoResi] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        if (!noResi.trim()) {
+            // Tampilkan pesan Swal jika input nomor resi kosong
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nomor resi tidak boleh kosong!',
+            });
+        }
+
+        try {
+            const response = await axios.post('http://localhost:8000/api/cekresi', {
+                no_resi: noResi,
+            });
+
+            setData(response.data.data);
+            setShowModal(true);
+        } catch (error) {
+            // Handle specific error types and display relevant messages to the user
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No Resi yang anda masukkan salah!',
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
         <Card className='col-md-5 col-15 mx-auto'>
             <div className='d-flex align-items-center'>
                 <Card.Body>
-                    <Row>
-                        <Col xs={8}>
-                            <Form.Control type="text" placeholder="Masukkan nomor resi" />
-                        </Col>
-                        <Col xs={4} className='d-flex justify-content-center'>
-                            <Button variant="primary">Lacak</Button>
-                        </Col>
-                    </Row>
+                    <Form onSubmit={handleSubmit}>
+                        <Row>
+                            <Col xs={8}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Masukkan nomor resi"
+                                    value={noResi}
+                                    onChange={(e) => setNoResi(e.target.value)}
+                                />
+                            </Col>
+                            <Col xs={4} className='d-flex justify-content-center'>
+                                <Button variant="primary" type="submit" disabled={loading}>
+                                    {loading ? 'Loading...' : 'Lacak'}
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Form>
                 </Card.Body>
             </div>
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Search Results</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {data.length > 0 ? (
+                        data.map((item, index) => (
+                            <div key={index}>
+                                <p>No Resi: {item.no_resi}</p>
+                                <p>Nama Barang: {item.nama_barang}</p>
+                                <p>Daerah: {item.daerah_barang}</p>
+                                <p>Status: {item.status}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No data found</p>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Card>
-    )
+    );
 }
+
 
 function About() {
     return(

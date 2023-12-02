@@ -13,31 +13,31 @@ import Select from 'react-select';
 
 function Register() {
 
-    const [daerahOptions, setDaerahOptions] = useState([
-        'Kabupaten Aceh Barat',
-        'Kabupaten Aceh Barat Daya',
-        'Kabupaten Aceh Besar',
-        'Kabupaten Aceh Jaya',
-        'Kabupaten Aceh Selatan',
-        'Kabupaten Aceh Singkil',
-        'Kabupaten Aceh Tamiang',
-        'Kabupaten Aceh Tengah',
-        'Kabupaten Aceh Tenggara',
-        'Kabupaten Aceh Timur',
-        'Kabupaten Aceh Utara',
-        'Kabupaten Bener Meriah',
-        'Kabupaten Bireuen',
-        'Kabupaten Gayo Lues',
-        'Kabupaten Nagan Raya',
-        'Kabupaten Pidie',
-        'Kabupaten Pidie Jaya',
-        'Kabupaten Simeulue',
-        'Kota Banda Aceh',
-        'Kota Langsa',
-        'Kota Lhokseumawe',
-        'Kota Sabang',
-        'Kota Subulussalam',
-    ]); // State untuk menyimpan daftar daerah
+    const daerahOptions = [
+        { label: 'Kabupaten Aceh Barat', value: 'Kabupaten Aceh Barat' },
+        { label: 'Kabupaten Aceh Barat Daya', value: 'Kabupaten Aceh Barat Daya' },
+        { label: 'Kabupaten Aceh Besar', value: 'Kabupaten Aceh Besar' },
+        { label: 'Kabupaten Aceh Jaya', value: 'Kabupaten Aceh Jaya' },
+        { label: 'Kabupaten Aceh Selatan', value: 'Kabupaten Aceh Selatan' },
+        { label: 'Kabupaten Aceh Singkil', value: 'Kabupaten Aceh Singkil' },
+        { label: 'Kabupaten Aceh Tamiang', value: 'Kabupaten Aceh Tamiang' },
+        { label: 'Kabupaten Aceh Tengah', value: 'Kabupaten Aceh Tengah' },
+        { label: 'Kabupaten Aceh Tenggara', value: 'Kabupaten Aceh Tenggara' },
+        { label: 'Kabupaten Aceh Timur', value: 'Kabupaten Aceh Timur' },
+        { label: 'Kabupaten Aceh Utara', value: 'Kabupaten Aceh Utara' },
+        { label: 'Kabupaten Bener Meriah', value: 'Kabupaten Bener Meriah' },
+        { label: 'Kabupaten Bireuen', value: 'Kabupaten Bireuen' },
+        { label: 'Kabupaten Gayo Lues', value: 'Kabupaten Gayo Lues' },
+        { label: 'Kabupaten Nagan Raya', value: 'Kabupaten Nagan Raya' },
+        { label: 'Kabupaten Pidie', value: 'Kabupaten Pidie' },
+        { label: 'Kabupaten Pidie Jaya', value: 'Kabupaten Pidie Jaya' },
+        { label: 'Kabupaten Simeulue', value: 'Kabupaten Simeulue' },
+        { label: 'Kota Banda Aceh', value: 'Kota Banda Aceh' },
+        { label: 'Kota Langsa', value: 'Kota Langsa' },
+        { label: 'Kota Lhokseumawe', value: 'Kota Lhokseumawe' },
+        { label: 'Kota Sabang', value: 'Kota Sabang' },
+        { label: 'Kota Subulussalam', value: 'Kota Subulussalam' },
+    ];
 
     const [selectedDaerah, setSelectedDaerah] = useState(null);
 
@@ -74,7 +74,6 @@ function Register() {
     const [nohpKurir, setNoHpKurir] = useState('');
     const [alamatKurir, setAlamatKurir] = useState('');
     const [adminDaerah, setAdminDaerah] = useState('');
-    const [daerah, setDaerah] = useState('');
 
     const handleRegistSuplier = async (e) => {
         e.preventDefault();
@@ -138,7 +137,7 @@ function Register() {
                 password: password,
                 namaKurir: namaKurir,
                 nohpKurir: nohpKurir,
-                alamatKurir: alamatKurir,
+                alamatKurir: selectedDaerah?.value,
                 }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -181,7 +180,7 @@ function Register() {
                 roleId: roleIdAdmin,
                 password: password,
                 adminDaerah: adminDaerah,
-                daerah: daerah,
+                daerah: selectedDaerah?.value,
                 }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -265,7 +264,16 @@ function Register() {
                         <MDBInput className='mb-4' label='Username' id='username'  type='text' onChange={(e) => setUsername(e.target.value)}/>
                         <input name='roleId' value='3' type='text' id='roleId' hidden onChange={(e) => setRoleIdKurir(e.target.value)} />
                         <MDBInput className='mb-4' label='No HP Kurir' id='nohpKurir' name='nohpKurir' type='text' onChange={(e) => setNoHpKurir(e.target.value)}/>
-                        <MDBInput className='mb-4' label='Alamat Kurir' id='alamatKurir' name='alamatKurir' type='text' onChange={(e) => setAlamatKurir(e.target.value)}/>
+                        <Select
+                            className='mb-4'
+                            options={daerahOptions}
+                            value={selectedDaerah}
+                            onChange={handleDaerahChange}
+                            placeholder="Pilih Daerah"
+                            styles={customStyles}
+                            isClearable
+                            isSearchable
+                        />
                         <MDBInput className='mb-5' label='Password' id='password' type='password' onChange={(e) => setPassword(e.target.value)}/>
                         <div className="text-end">
                             <Button className="fw-bold pt-3 pb-3 ps-4 pe-4 rounded-pill" type="submit" style={{ background: '#1d3557' }}>
@@ -282,11 +290,8 @@ function Register() {
                         <MDBInput className='mb-4' label='Password' id='password' name='password' type='password' onChange={(e) => setPassword(e.target.value)}/>
                         <input name='roleId' type='text' id='roleId' hidden onChange={(e) => setRoleIdAdmin(e.target.value)} />
                         <Select
-                            options={daerahOptions.map((daerah, index) => ({
-                                label: daerah,
-                                value: index,
-                            }))}
                             className='mb-4'
+                            options={daerahOptions}
                             value={selectedDaerah}
                             onChange={handleDaerahChange}
                             placeholder="Pilih Daerah"

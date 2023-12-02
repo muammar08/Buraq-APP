@@ -17,6 +17,8 @@ import DaftarBarangSuplier from './components/DashboardAdmin/DaftarBarangSuplier
 import DaftarBarangPerorang from './components/DashboardAdmin/DaftarBarangPerorang'
 import InputBarangSuplier from './components/DashboardAdmin/InputBarangSuplier'
 import InputBarangPerorang from './components/DashboardAdmin/InputBarangPerorang'
+import DashboardAdminPerorang from './components/DashboardAdminDaerah/DashboardAdminPerorang'
+import KurirPerorang from './components/DashboardAdmin/KurirPerorang'
 
 
 function App() {
@@ -27,11 +29,13 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route path='/dashboardAdmin' element={<DashboardAdmin/>}/>
         <Route path='/dashboardAdminDaerah' element={<DashboardAdminDaerah/>}/>
+        <Route path='/dashboardAdminPerorang' element={<DashboardAdminPerorang/>} />
         <Route path='/dashboardKurir' element={<DashboardKurir/>} />
         <Route path='/dashboardSuplier' element={<DashboardSupplier/>} />
         <Route path='daftarBarangSuplier' element={<DaftarBarangSuplier/>} />
         <Route path='daftarBarangPerorang' element={<DaftarBarangPerorang/>} />
         <Route path='/pilihKurir' element={<Kurir/>}/>
+        <Route path='/pilihKurirPerorang' element={<KurirPerorang/>}/>
         <Route path='/inputBarangSuplier' element={<InputBarangSuplier/>} />
         <Route path='/inputBarangPerorang' element={<InputBarangPerorang/>} />
         <Route path='/register' element={<Register/>} />

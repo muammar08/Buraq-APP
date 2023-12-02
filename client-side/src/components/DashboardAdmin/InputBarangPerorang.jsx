@@ -93,6 +93,12 @@ function InputBarangPerorang() {
 
         } catch (error) {
             console.error('Error creating barang', error);
+
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal menyimpan data',
+                text: 'Terjadi kesalahan saat menyimpan data. Resi Sudah Terdaftar',
+              });
         }
     };
 
@@ -189,7 +195,7 @@ function InputBarangPerorang() {
                             id='pembayaran'
                         >
                             <option>Pilih Pembayaran</option>
-                            <option value="Cash">Lunas</option>
+                            <option value="Lunas">Lunas</option>
                             <option value="COD">COD</option>
                         </Form.Select>
                     </Col>

@@ -33,12 +33,12 @@ class ResiController extends Controller
                             ->where('no_resi_satuan', $noResi)
             );
 
-            $finalResult = $result->first();
-            if ($finalResult) {
+            $finalResult = $result->get();
+            if ($finalResult->isNotEmpty()) {
                 // Nomor resi ditemukan, kembalikan respons sukses
                 return response()->json([
                     'success' => true,
-                    'data' => $finalResult,
+                    'data' => $finalResult->toArray(),
                 ], 200);
             } else {
                 // Nomor resi tidak ditemukan di kedua tabel

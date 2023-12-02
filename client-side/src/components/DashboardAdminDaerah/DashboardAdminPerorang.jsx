@@ -4,7 +4,7 @@ import { Form, Row, Col, Container, Card } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-function DashboardAdminDaerah() {
+function DashboardAdminPerorang() {
     const token = localStorage.getItem('token');
     const [selectedData, setSelectedData] = useState([]);
     const [selectedBarang, setSelectedBarang] = useState([]);
@@ -12,17 +12,17 @@ function DashboardAdminDaerah() {
 
     const handleCheckboxChange = (e) => {
         const barangId = e.target.value;
-        if (e.target.checked) {
+        if(e.target.checked) {
             setSelectedBarang([...selectedBarang, barangId]);
         } else {
             setSelectedBarang(selectedBarang.filter((id) => id !== barangId));
         }
-    };
+    }
 
     const handleSubmit = async () => {
         try {
           const response = await axios.post(
-            'http://localhost:8000/api/setkurir',
+            'http://localhost:8000/api/setkurirsatuan',
             {
               id_kurir: selectedKurir,
               select: selectedBarang,
@@ -33,7 +33,6 @@ function DashboardAdminDaerah() {
               },
             }
           );
-          console.log(response.data); // Use response.data to access the response data
         
           Swal.fire({
             icon: 'success',
@@ -61,7 +60,6 @@ function DashboardAdminDaerah() {
             })
                 .then((response) => {
                     setSelectedData(response.data.data);
-                    console.log(response.data.data);
                 })
                 .catch((error) => {
                     console.error('Gagal mengambil data kurir', error);
@@ -76,6 +74,7 @@ function DashboardAdminDaerah() {
     };
 
     const [searchTerm, setSearchTerm] = useState('');
+    console.log(searchTerm);
 
     return (
         <div>
@@ -84,17 +83,11 @@ function DashboardAdminDaerah() {
                     <Row>
                         <h3>Pilih Kurir</h3>
                         <Col xs={7}>
-                            <Form.Select value={selectedKurir || ''} aria-label="Default select example" onChange={handleKurirSelect}>
-                            <option>Pilih Kurir</option>
-                            {Array.isArray(selectedData) ? (
-                                selectedData.map((item, index) => (
-                                <option key={index} value={item.id_kurir}>
-                                    {item.nama_kurir}
-                                </option>
-                                ))
-                            ) : (
-                                <option>Tidak ada data</option>
-                            )}
+                            <Form.Select aria-label="Default select example" onChange={handleKurirSelect}>
+                                <option>Pilih Kurir</option>
+                                {selectedData.map((data, index) => (
+                                    <option key={index} value={data.id_kurir}>{data.nama_kurir}</option>
+                                ))}
                             </Form.Select>
                         </Col>
                         <Col className='mb-3'>
@@ -106,26 +99,26 @@ function DashboardAdminDaerah() {
                 </div>
             </div>
 
-            {/* Tampilkan CardAdminDaerah hanya jika sebuah kurir telah dipilih */}
-            <CardAdminDaerah 
-                        barangData={selectedBarang}
-                        handleCheckboxChange={handleCheckboxChange}
-                        searchTerm={searchTerm}
-                        />
+            <CardAdminPerorang 
+                kurirId={selectedKurir} 
+                barangData={selectedBarang} 
+                handleCheckboxChange={handleCheckboxChange} 
+                searchTerm={searchTerm} 
+            />
 
             <BottomBar setSearchTerm={setSearchTerm} />
         </div>
     )
 }
 
-function CardAdminDaerah({ handleCheckboxChange , searchTerm =''}) {
+function CardAdminPerorang({ handleCheckboxChange , searchTerm = ''}) {
 
     const token = localStorage.getItem('token');
     const [barangData, setBarangData] = useState([]);
   
     useEffect(() => {
         if (token) {
-            axios.get('http://localhost:8000/api/listdaerah', {
+            axios.get('http://localhost:8000/api/listdaerahsatuan', {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -141,28 +134,28 @@ function CardAdminDaerah({ handleCheckboxChange , searchTerm =''}) {
     }, [token]);
   
     const filteredData = barangData.filter((item) =>
-    item.nama_barang.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+        item.nama_barang.toLowerCase().includes(searchTerm.toLowerCase())
+      );
   
     return (
       <div>
-        <p className='d-flex justify-content-center align-items-center fw-bold'  style={{marginTop:'6.8rem'}}>Barang Suplier</p> 
+        <p className='d-flex justify-content-center align-items-center fw-bold'  style={{marginTop:'6.8rem'}}>Barang Perorang</p> 
         <Container className='d-flex justify-content-center align-items-center' >
-         {Array.isArray(filteredData) && filteredData.length > 0 ? (
+         {filteredData.length > 0 ? (
           <div style={{ width: '20rem' }}>
               {filteredData.map((data, index) => (
                   <Card key={index} style={{ marginBottom: '20px' }}>
                       <Card.Body style={{ display: 'flex' }}>
                           <Form.Check
                               type='checkbox'
-                              value={data.id_barang}
+                              value={data.id_satuan}
                               onChange={handleCheckboxChange}
                               style={{ marginRight: '10px'}}
                           />
                           <div>
                               <Card.Title>{data.nama_barang}</Card.Title>
-                              <Card.Text>{data.no_resi}</Card.Text>
-                              <Card.Text>{data.daerah_barang}</Card.Text>
+                              <Card.Text>{data.no_resi_satuan}</Card.Text>
+                              <Card.Text>{data.daerah_satuan}</Card.Text>
                               <Card.Text>{data.alamat_penerima}</Card.Text>
                           </div>
                       </Card.Body>
@@ -177,4 +170,4 @@ function CardAdminDaerah({ handleCheckboxChange , searchTerm =''}) {
     );
   }
 
-export default DashboardAdminDaerah;
+export default DashboardAdminPerorang;

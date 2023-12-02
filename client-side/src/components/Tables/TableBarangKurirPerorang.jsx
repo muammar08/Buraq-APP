@@ -32,7 +32,7 @@ function TableBarangKurir() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/setkurir',
+        'http://localhost:8000/api/setkurirsatuan',
         {
           id_kurir: selectedKurir,
           select: selectedBarang,
@@ -66,7 +66,7 @@ function TableBarangKurir() {
     if (token) {
       axios
         .all([
-          axios.get('http://localhost:8000/api/listforkurir', {
+          axios.get('http://localhost:8000/api/listforkurirsatuan', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -80,6 +80,8 @@ function TableBarangKurir() {
         .then(axios.spread((barangResponse, kurirResponse) => {
           setData(barangResponse.data.data);
           setDataKurir(kurirResponse.data.data);
+
+          console.log(barangResponse.data.data);
         }))
         .catch((error) => {
           console.error('Gagal mengambil data atau kurir', error);
@@ -98,8 +100,7 @@ function TableBarangKurir() {
     const filteredData = data.filter((item) => {
       return (
         item.nama_barang.toLowerCase().includes(input) ||
-        item.nama_penerima.toLowerCase().includes(input) ||
-        item.suplier.nama_suplier.toLowerCase().includes(input)
+        item.nama_penerima.toLowerCase().includes(input)
       );
     }
     );
@@ -139,7 +140,7 @@ function TableBarangKurir() {
       <Container className="p-4">
         <Row>
           <Col xs={10}>
-            <h2>Daftar Barang Suplier</h2>
+            <h2>Daftar Barang Perorang</h2>
           </Col>
           <Col>
             <input
@@ -162,7 +163,6 @@ function TableBarangKurir() {
                 <th>Nama Penerima</th>
                 <th>Alamat Penerima</th>
                 <th>No Hp Penerima</th>
-                <th>Nama Perusahaan</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -176,11 +176,10 @@ function TableBarangKurir() {
                     <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
                     <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
                     <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
                     <td>
                       <FormCheck
                         type="checkbox"
-                        value={item.id_barang} // Gunakan id barang sebagai nilai checkbox
+                        value={item.id_satuan} // Gunakan id barang sebagai nilai checkbox
                         onChange={handleCheckboxChange}
                       />
                     </td>
@@ -196,11 +195,10 @@ function TableBarangKurir() {
                       <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
                       <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
                       <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
-                      <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
                       <td>
                         <FormCheck
                           type="checkbox"
-                          value={item.id_barang} // Gunakan id barang sebagai nilai checkbox
+                          value={item.id_satuan} // Gunakan id barang sebagai nilai checkbox
                           onChange={handleCheckboxChange}
                         />
                       </td>

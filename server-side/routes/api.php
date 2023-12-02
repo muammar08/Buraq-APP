@@ -41,7 +41,9 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('createbarang', [BarangController::class, 'store']);
     Route::post('createbarangsatuan', [BarangController::class, 'storeSatuan']);
     Route::get('getkurir', [KurirController::class, 'getKurir']);
+    Route::get('getkuriradmindaerah', [KurirController::class, 'getKurirAdminDaerah']);
     Route::get('listforkurir', [BarangController::class, 'pickKurir']);
+    Route::get('listforkurirsatuan', [BarangController::class, 'pickKurirSatuan']);
     Route::post('setkurir', [KurirController::class, 'setKurir']);
     Route::post('setkurirsatuan', [KurirController::class, 'setKurirSatuan']);
     Route::get('riwayat', [BarangController::class, 'barangDone']);

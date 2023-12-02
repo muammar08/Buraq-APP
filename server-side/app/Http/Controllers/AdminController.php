@@ -40,8 +40,10 @@ class AdminController extends Controller
         $barangData = $barang
             ->join('admins', 'barangs.daerah_barang', '=', 'admins.daerah')
             ->where('admins.id_user', $authenticatedAdmin->id)
+            ->whereNull('barangs.id_kurir')
             ->select('barangs.*')
-            ->get()->toArray();
+            ->get()
+            ->toArray();
 
         return response()->json([
             'success' => true,
@@ -57,6 +59,7 @@ class AdminController extends Controller
         $barangSatuan = $satuan
             ->join('admins', 'barang_satuans.daerah_satuan', '=', 'admins.daerah')
             ->where('admins.id_user', $authenticatedAdmin->id)
+            ->whereNull('barang_satuans.id_kurir')
             ->select('barang_satuans.*')
             ->get()->toArray();
 

@@ -42,11 +42,14 @@ function BottomBar({ show, onHide, setSearchTerm }) {
 
   return (
     <>
-      <Navbar className="fixed-bottom justify-content-center" style={{ backgroundColor: '#1d3557' }}>
+      <Navbar className="fixed-bottom justify-content-center" style={{ backgroundColor: '#1d3557', position: 'fixed' }}>
         <Container className='justify-content-center'>
           <Row className='align-items-center'>
             <Col className='me-3 ms-3'>
-              <div className='bi bi-house fs-2 text-light' onClick={() => {window.location.href= '/dashboardAdminDaerah'}}></div>
+              <div className='bi bi-buildings fs-2 text-light' onClick={() => {window.location.href= '/dashboardAdminDaerah'}}></div>
+            </Col>
+            <Col className='me-3 ms-3'>
+              <div className='bi bi-person-standing fs-2 text-light' onClick={() => {window.location.href= '/dashboardAdminPerorang'}}></div>
             </Col>
             <Col className='me-3 ms-3'>
               <div className='bi bi-search fs-2 text-light' onClick={handleShowModal}></div>
