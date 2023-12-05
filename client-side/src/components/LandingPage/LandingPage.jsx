@@ -167,7 +167,12 @@ function CardResi() {
                                 <p>No Resi: {item.no_resi}</p>
                                 <p>Nama Barang: {item.nama_barang}</p>
                                 <p>Daerah: {item.daerah_barang}</p>
-                                <p>Status: {item.status}</p>
+                                <p>Status: {item.status === 'proses' ? (
+                                        <Button className='p-1 fw-bold fs-7 bg-warning shadow-lg rounded-pill'>Proses</Button>
+                                    ) : item.status === 'berhasil' ? (
+                                        <Button className='p-1 fw-bold fs-7 bg-success shadow-lg rounded-pill'>Berhasil</Button>
+                                    ) : null // Handle other status as needed
+                                }</p>
                             </div>
                         ))
                     ) : (

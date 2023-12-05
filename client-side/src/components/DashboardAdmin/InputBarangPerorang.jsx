@@ -97,7 +97,7 @@ function InputBarangPerorang() {
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal menyimpan data',
-                text: 'Terjadi kesalahan saat menyimpan data. Resi Sudah Terdaftar',
+                text: 'Terjadi kesalahan saat menyimpan data.',
               });
         }
     };
@@ -207,6 +207,7 @@ function InputBarangPerorang() {
                                 id='harga'
                                 value={harga}
                                 onChange={(e) => setHarga(e.target.value)}
+                                required
                             />
                         )}
                     </Col>

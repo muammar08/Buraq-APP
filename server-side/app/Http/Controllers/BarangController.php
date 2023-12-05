@@ -30,6 +30,7 @@ class BarangController extends Controller
     public function adminDash()
     {
         $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
+            ->whereNull('id_kurir')
             ->get()->toArray();
 
         return response()->json([
@@ -40,7 +41,7 @@ class BarangController extends Controller
 
     public function adminDashSatuan() {
 
-        $satuan = BarangSatuan::get()->toArray();
+        $satuan = BarangSatuan::whereNull('id_kurir')->get()->toArray();
 
         return response()->json([
             'success' =>true,

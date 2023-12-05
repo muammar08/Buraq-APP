@@ -114,7 +114,7 @@ function CardKurir({searchTerm = ''}) {
       }
   
       const response = await axios.post(
-        `http://localhost:8000/api/upfoto/${selectedItemIdSatuan}`,
+        `http://localhost:8000/api/upfotosatuan/${selectedItemIdSatuan}`,
         formData, // Use the FormData object
         {
           headers: {
@@ -270,6 +270,7 @@ function CardKurir({searchTerm = ''}) {
                     <Card.Text>{selectedItemSatuan.nama_penerima}</Card.Text>
                     <Card.Text>{selectedItemSatuan.nohp_penerima}</Card.Text>
                     <Card.Text>{selectedItemSatuan.alamat_penerima}</Card.Text>
+                    <Card.Text>Rp. {selectedItemSatuan.harga}</Card.Text>
                   </Card.Body>
                 </Col>
                 <Col md={4}>

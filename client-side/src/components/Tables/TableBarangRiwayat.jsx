@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Modal, Row, Card } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import '../../css/style.css';
 import axios from 'axios';
@@ -10,6 +10,8 @@ function TableBarangRiwayat({title}) {
   const [search, setSearch] = useState('');
   const [data, setData] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   
 
   useEffect (() => {
@@ -56,6 +58,19 @@ function TableBarangRiwayat({title}) {
         searchTable();
     }, [search]);
 
+    const handleShowModal = (id) => {
+      setSelectedPhoto(id);
+      setShowModal(true);
+    }
+
+    const handleCloseModal = () => {
+      setSelectedPhoto(null);
+      setShowModal(false);
+    }
+
+    const selectedItem = data.find(item => item.id_barang === selectedPhoto);
+
+    const urlGambar = selectedItem?.foto ? `http://localhost:8000/img/${selectedItem.foto}` : null;
 
   return (
     <div>
@@ -78,46 +93,50 @@ function TableBarangRiwayat({title}) {
             <thead>
               <tr className='black table align-middle'>
                 <th>No</th>
+                <th>Resi</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
                 <th>Nama Penerima</th>
                 <th>Alamat Penerima</th>
                 <th>No Hp Penerima</th>
                 <th>Nama Perusahaan</th>
-                <th>Status Pengiriman</th>
                 <th>Foto</th>
                 <th>Kurir</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray (searchResults) && searchResults.length > 0 ? (
-                searchResults.map((item, index) => (
+                [...searchResults].reverse().map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
+                    <td>{item.no_resi}</td>
                     <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                     <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                     <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
                     <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
+                    <td>{item.nohp_penerima}</td>
                     <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
-                    <td>{capitalizeFirstLetter(item.status)}</td>
-                    <td>{capitalizeFirstLetter(item.foto)}</td>
+                    <td>
+                      <a href="#" onClick={() => handleShowModal(item.id_barang)}>{capitalizeFirstLetter(item.foto)}</a>
+                    </td>
                     <td>{capitalizeFirstLetter(item.kurir.nama_kurir)}</td>
                   </tr>
                 ))
               ) : (
                 Array.isArray(data) && data.length > 0 ? (
-                    data.map((item, index) => (
+                    [...data].reverse().map((item, index) => (
                         <tr key={index}>
                         <td>{index + 1}</td>
+                        <td>{item.no_resi}</td>
                         <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                         <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                         <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
                         <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
-                        <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
+                        <td>{item.nohp_penerima}</td>
                         <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
-                        <td>{capitalizeFirstLetter(item.status)}</td>
-                        <td>{capitalizeFirstLetter(item.foto)}</td>
+                        <td className='text-dark'>
+                          <a className='text-dark' href="#" onClick={() => handleShowModal(item.id_barang)}>{capitalizeFirstLetter(item.foto)}</a>
+                        </td>
                         <td>{capitalizeFirstLetter(item.kurir.nama_kurir)}</td>
                         </tr>
                     ))
@@ -130,6 +149,23 @@ function TableBarangRiwayat({title}) {
             </tbody>
           </Table>
         </div>
+        <Modal show={showModal} onHide={handleCloseModal}>
+          <Modal.Header closeButton>
+            <Modal.Title>Photo</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {selectedItem && (
+              <Card>
+                <Card.Body>
+                  <Card.Title>Photo Preview</Card.Title>
+                  <Card.Text>
+                    <Card.Img src={urlGambar} />
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            )}
+          </Modal.Body>
+        </Modal>
       </Container>
     </div>
   );

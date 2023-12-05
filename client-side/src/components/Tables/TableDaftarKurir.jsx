@@ -84,7 +84,7 @@ function TableDaftarKurir(){
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{capitalizeFirstLetter(item.nama_kurir)}</td>
-                                    <td>{capitalizeFirstLetter(item.nohp_kurir)}</td>
+                                    <td>{item.nohp_kurir}</td>
                                     <td>{capitalizeFirstLetter(item.alamat_kurir)}</td>
                                 </tr>
                             ))
@@ -94,7 +94,7 @@ function TableDaftarKurir(){
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{capitalizeFirstLetter(item.nama_kurir)}</td>
-                                        <td>{capitalizeFirstLetter(item.nohp_kurir)}</td>
+                                        <td>{item.nohp_kurir}</td>
                                         <td>{capitalizeFirstLetter(item.alamat_kurir)}</td>
                                     </tr>
                                 ))

@@ -10,6 +10,7 @@ function TableBarangSuplier({title}) {
   const token = localStorage.getItem('token');
   const [search, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect (() => {
     if (!token) {
@@ -38,21 +39,53 @@ function TableBarangSuplier({title}) {
     });
   }
 
+  function formatDate(date) {
+    // Memisahkan tanggal, bulan, dan tahun dengan menggunakan split()
+    const dateNew = new Date(date);
+    // Mengambil nilai tanggal, bulan, dan tahun
+    const day = dateNew.getDate();
+    const month = dateNew.getMonth() + 1;
+    const year = dateNew.getFullYear();
+    // Menggabungkan kembali dengan format yang diinginkan
+    return `${day}-${month}-${year}`;
+  }
+
+
+  function handleDateChange(date) {
+    setSelectedDate(date);
+    searchTable(date);
+  }
+
   function searchTable() {
     const input = search.toLowerCase();
-    const filteredData = data.filter((item) => {
-      return (
-        item.nama_barang.toLowerCase().includes(input) || // Sesuaikan dengan kolom yang ingin Anda cari
-        item.nama_penerima.toLowerCase().includes(input) ||
-        item.suplier.nama_suplier.toLowerCase().includes(input)
-      );
-    });
-    setSearchResults(filteredData);
+    let filteredData = data;
+    const date = new Date(selectedDate);
+  
+    if (date.toString() !== 'Invalid Date') {
+      filteredData = filteredData.filter((item) => {
+        // Ubah format tanggal pada data untuk membandingkan dengan tanggal yang dipilih
+        const itemDate = new Date(item.created_at);
+        const formattedItemDate = `${itemDate.getFullYear()}-${('0' + (itemDate.getMonth() + 1)).slice(-2)}-${('0' + itemDate.getDate()).slice(-2)}`;
+        return formattedItemDate === selectedDate;
+      });
+  
+      setSearchResults(filteredData);
+    } else {
+      filteredData = filteredData.filter((item) => {
+        return (
+          item.nama_barang.toLowerCase().includes(input) ||
+          item.nama_penerima.toLowerCase().includes(input) ||
+          item.suplier.nama_suplier.toLowerCase().includes(input)
+        );
+      });
+  
+      setSearchResults(filteredData);
+    }
   }
   
   useEffect(() => {
     searchTable();
-  }, [search]);
+  }, [search, selectedDate]);
 
   return (
     <div>
@@ -72,7 +105,13 @@ function TableBarangSuplier({title}) {
             />
           </Col>
           <Col>
-            <input className='form-control' type='date' placeholder='Pilih Tanggal'></input>
+            <input 
+              className='form-control' 
+              type='date' 
+              placeholder='Pilih Tanggal'
+              value={selectedDate}
+              onChange={(e) => handleDateChange(e.target.value)}
+              />
           </Col>
         </Row>
 
@@ -82,39 +121,42 @@ function TableBarangSuplier({title}) {
               <tr className='black table align-middle'>
                 <th>No</th>
                 <th>Nama Perusahaan</th>
+                <th>Tanggal</th>
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
                 <th>Nama Penerima</th>
-                <th>Alamat Penerima</th>
+                <th>Kabupaten</th>
                 <th>No Hp Penerima</th>
                 <th>Resi</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray(searchResults) && searchResults.length > 0 ? (
-                searchResults.map((item, index) => (
+                [...searchResults].reverse().map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
+                    <td>{formatDate(item.created_at)}</td>
                     <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                     <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                     <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
+                    <td>{capitalizeFirstLetter(item.daerah_barang)}</td>
+                    <td>{item.nohp_penerima}</td>
                     <td>{(item.no_resi)}</td>
                   </tr>
                 ))
               ) : (
                 Array.isArray(data) && data.length > 0 ? (
-                  data.map((item, index) => (
+                  [...data].reverse().map((item, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
+                      <td>{formatDate(item.created_at)}</td>
                       <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                       <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                       <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
-                      <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
-                      <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
+                      <td>{capitalizeFirstLetter(item.daerah_barang)}</td>
+                      <td>{item.nohp_penerima}</td>
                       <td>{(item.no_resi)}</td>
                     </tr>
                   ))

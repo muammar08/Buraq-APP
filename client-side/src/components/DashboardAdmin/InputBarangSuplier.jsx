@@ -97,7 +97,7 @@ function InputBarangSuplier() {
         Swal.fire({
             icon: 'error',
             title: 'Gagal menyimpan data',
-            text: 'Terjadi kesalahan saat menyimpan data. Resi Sudah Terdaftar',
+            text: 'Terjadi kesalahan saat menyimpan data.',
           });
     }
 };

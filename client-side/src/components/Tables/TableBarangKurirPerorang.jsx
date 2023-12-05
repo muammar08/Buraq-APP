@@ -161,21 +161,21 @@ function TableBarangKurir() {
                 <th>Nama Barang</th>
                 <th>Jumlah Barang</th>
                 <th>Nama Penerima</th>
-                <th>Alamat Penerima</th>
+                <th>Kabupaten</th>
                 <th>No Hp Penerima</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {Array.isArray(searchResults) && searchResults.length > 0 ? (
-                searchResults.map((item, index) => (
+                [...searchResults].reverse().map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                     <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                     <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
+                    <td>{capitalizeFirstLetter(item.daerah_satuan)}</td>
+                    <td>{item.nohp_penerima}</td>
                     <td>
                       <FormCheck
                         type="checkbox"
@@ -187,14 +187,14 @@ function TableBarangKurir() {
                 ))
               ) : (
                 Array.isArray(data) && data.length > 0 ? (
-                  data.map((item, index) => (
+                  [...data].reverse().map((item, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                       <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                       <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
-                      <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
-                      <td>{capitalizeFirstLetter(item.nohp_penerima)}</td>
+                      <td>{capitalizeFirstLetter(item.daerah_satuan)}</td>
+                      <td>{item.nohp_penerima}</td>
                       <td>
                         <FormCheck
                           type="checkbox"
