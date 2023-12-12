@@ -5,6 +5,7 @@ import { Button, ButtonGroup, Form } from 'react-bootstrap';
 import axios from 'axios'; // Impor Axios untuk melakukan permintaan HTTP
 import Swal from 'sweetalert2';
 import Select from 'react-select';
+import BASE_URL from '../../config';
 
 // const isAuthenticated = () => {
 //   const token = localStorage.getItem('token');
@@ -88,7 +89,7 @@ function Register() {
         }
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/registersuplier', {
+            const response = await axios.post(`${BASE_URL}/api/registersuplier`, {
                 username: username,
                 roleId: roleIdSuplier,
                 password: password,
@@ -131,7 +132,7 @@ function Register() {
         }
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/registerkurir', {
+            const response = await axios.post(`${BASE_URL}/api/registerkurir`, {
                 username: username,
                 roleId: roleIdKurir,
                 password: password,
@@ -175,7 +176,7 @@ function Register() {
         }
 
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/registeradmin', {
+            const response = await axios.post(`${BASE_URL}/api/registeradmin`, {
                 username: username,
                 roleId: roleIdAdmin,
                 password: password,

@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import { Form, Container, Table, Row, Col } from 'react-bootstrap';
 import '../../css/style.css';
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function TableDaftarKurir(){
 
@@ -14,7 +15,7 @@ function TableDaftarKurir(){
         if (!token) {
           window.location.href = '/';
         } else {
-          axios.get('http://localhost:8000/api/getkurir', {
+          axios.get(`${BASE_URL}/api/getkurir`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, Row, Col } from 'react-bootstrap';
 import gambar from '../../assets/noimage.png';
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function CardKurir({searchTerm = ''}) {
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +18,7 @@ function CardKurir({searchTerm = ''}) {
 
   useEffect(() => {
     if (token) {
-      axios.get('http://localhost:8000/api/listbarangkurir', {
+      axios.get(`${BASE_URL}/api/listbarangkurir`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,7 +86,7 @@ function CardKurir({searchTerm = ''}) {
       }
   
       const response = await axios.post(
-        `http://localhost:8000/api/upfoto/${selectedItemId}`,
+        `${BASE_URL}/api/upfoto/${selectedItemId}`,
         formData, // Use the FormData object
         {
           headers: {
@@ -114,7 +115,7 @@ function CardKurir({searchTerm = ''}) {
       }
   
       const response = await axios.post(
-        `http://localhost:8000/api/upfotosatuan/${selectedItemIdSatuan}`,
+        `${BASE_URL}/api/upfotosatuan/${selectedItemIdSatuan}`,
         formData, // Use the FormData object
         {
           headers: {

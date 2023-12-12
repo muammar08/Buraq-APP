@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from '../Sidebar/Sidebar';
 import TableDaftarKurir from '../Tables/TableDaftarKurir';
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function DaftarKurir() {
     const token = localStorage.getItem('token');
@@ -12,7 +13,7 @@ function DaftarKurir() {
         if (!token) {
           window.location.href = '/';
         } else {
-          axios.get('http://localhost:8000/api/getuser', {
+          axios.get(`${BASE_URL}/api/getuser`, {
             
             headers: {
               Authorization: `Bearer ${token}`,

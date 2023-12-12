@@ -18,6 +18,8 @@ import '../../css/style.css'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+import BASE_URL from '../../config';
+
 
 function LandingPage () {
 
@@ -115,7 +117,7 @@ function CardResi() {
         }
 
         try {
-            const response = await axios.post('http://localhost:8000/api/cekresi', {
+            const response = await axios.post(`${BASE_URL}/api/cekresi`, {
                 no_resi: noResi,
             });
 

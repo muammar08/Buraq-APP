@@ -5,6 +5,7 @@ import {Button, Col, Form, Row} from 'react-bootstrap'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import Select from "react-select";
+import BASE_URL from '../../config';
 
 function InputBarangSuplier() {
     
@@ -19,7 +20,7 @@ function InputBarangSuplier() {
     if (!token) {
       window.location.href = '/';
     } else {
-      axios.get('http://127.0.0.1:8000/api/getsuplier', {
+      axios.get(`${BASE_URL}/api/getsuplier`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -49,7 +50,7 @@ function InputBarangSuplier() {
     e.preventDefault();
     try {
         const response = await axios.post(
-            'http://127.0.0.1:8000/api/createbarang',
+            `${BASE_URL}/api/createbarang`,
             {
                 noResi: noResi,
                 namaBarang: namaBarang,

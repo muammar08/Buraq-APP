@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import '../../css/style.css';
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function TableBarangPerorang({title}) {
 
@@ -16,7 +17,7 @@ function TableBarangPerorang({title}) {
     if (!token) {
       window.location.href = '/';
     } else {
-      axios.get('http://127.0.0.1:8000/api/listbarangsatuan', {
+      axios.get(`${BASE_URL}/api/listbarangsatuan`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

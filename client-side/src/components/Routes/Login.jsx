@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CardLogin from "../Cards/CardLogin";
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import BASE_URL from '../../config';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -20,7 +21,7 @@ function Login() {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/login', {
+      const response = await axios.post(`${BASE_URL}/api/login`, {
         username: username,
         password: password,
       });

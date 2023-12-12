@@ -3,6 +3,7 @@ import { Col, Container, Modal, Row, Card } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import '../../css/style.css';
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function TableBarangRiwayat({title}) {
 
@@ -18,7 +19,7 @@ function TableBarangRiwayat({title}) {
     if (!token) {
       window.location.href = '/';
     } else {
-      axios.get('http://127.0.0.1:8000/api/riwayat', {
+      axios.get(`${BASE_URL}/api/riwayat`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -70,7 +71,7 @@ function TableBarangRiwayat({title}) {
 
     const selectedItem = data.find(item => item.id_barang === selectedPhoto);
 
-    const urlGambar = selectedItem?.foto ? `http://localhost:8000/img/${selectedItem.foto}` : null;
+    const urlGambar = selectedItem?.foto ? `${BASE_URL}/img/${selectedItem.foto}` : null;
 
   return (
     <div>

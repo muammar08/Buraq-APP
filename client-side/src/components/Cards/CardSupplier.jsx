@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Button, Modal, CardBody } from 'react-bootstrap';
 import gambar from "../../assets/noimage.png"
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function CardSupplier({ searchTerm = '' }) {
     const [showModal, setShowModal] = useState(false);
@@ -11,7 +12,7 @@ function CardSupplier({ searchTerm = '' }) {
 
     useEffect(() => {
         if (token) {
-            axios.get('http://localhost:8000/api/listbarangsuplier', {
+            axios.get(`${BASE_URL}/api/listbarangsuplier`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -40,7 +41,7 @@ function CardSupplier({ searchTerm = '' }) {
     // Use the selectedItemId to find the item with the matching ID
     const selectedItem = selectedData.find(item => item.id_barang === selectedItemId);
 
-    const urlGambar = selectedItem?.foto ? `http://localhost:8000/img/${selectedItem.foto}` : gambar;
+    const urlGambar = selectedItem?.foto ? `${BASE_URL}/img/${selectedItem.foto}` : gambar;
 
     // Filter data based on the search term
     const filteredData = selectedData.filter((item) =>
@@ -70,7 +71,7 @@ function CardSupplier({ searchTerm = '' }) {
                             <Card.Img
                                 className='d-flex align-items-center p-3'
                                 variant='center'
-                                src={data.foto ? `http://localhost:8000/img/${data.foto}` : gambar}
+                                src={data.foto ? `${BASE_URL}/img/${data.foto}` : gambar}
                                 style={{ width: '30%', height: '30%', objectFit: 'cover', justifyContent: 'center' }}
                             />
                         </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect }  from 'react'
 import { Form, Container, Table, Row, Col } from 'react-bootstrap';
 import '../../css/style.css';
 import axios from 'axios';
+import BASE_URL from '../../config';
 
 function TableDaftarSuplier(){
 
@@ -19,7 +20,7 @@ function TableDaftarSuplier(){
         if (!token) {
           window.location.href = '/';
         } else {
-          axios.get('http://localhost:8000/api/getsuplier', {
+          axios.get(`${BASE_URL}/api/getsuplier`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

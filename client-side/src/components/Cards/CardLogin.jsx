@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, Form, Card } from 'react-bootstrap';
 import { MDBInput } from 'mdb-react-ui-kit';
 
-
 const CardLogin = ({ setUsername, setPassword, onLogin }) => {
   
   return (

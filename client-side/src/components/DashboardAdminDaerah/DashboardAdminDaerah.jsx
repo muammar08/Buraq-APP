@@ -3,6 +3,7 @@ import BottomBar from './BottomBar';
 import { Form, Row, Col, Container, Card } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import BASE_URL from '../../config';
 
 function DashboardAdminDaerah() {
     const token = localStorage.getItem('token');
@@ -22,7 +23,7 @@ function DashboardAdminDaerah() {
     const handleSubmit = async () => {
         try {
           const response = await axios.post(
-            'http://localhost:8000/api/setkurir',
+            `${BASE_URL}/api/setkurir`,
             {
               id_kurir: selectedKurir,
               select: selectedBarang,
@@ -54,7 +55,7 @@ function DashboardAdminDaerah() {
 
     useEffect(() => {
         if (token) {
-            axios.get('http://localhost:8000/api/getkuriradmindaerah', {
+            axios.get(`${BASE_URL}/api/getkuriradmindaerah`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -125,7 +126,7 @@ function CardAdminDaerah({ handleCheckboxChange , searchTerm =''}) {
   
     useEffect(() => {
         if (token) {
-            axios.get('http://localhost:8000/api/listdaerah', {
+            axios.get(`${BASE_URL}/api/listdaerah`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

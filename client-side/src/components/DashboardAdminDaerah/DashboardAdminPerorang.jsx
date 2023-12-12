@@ -3,6 +3,7 @@ import BottomBar from './BottomBar';
 import { Form, Row, Col, Container, Card } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import BASE_URL from '../../config';
 
 function DashboardAdminPerorang() {
     const token = localStorage.getItem('token');
@@ -22,7 +23,7 @@ function DashboardAdminPerorang() {
     const handleSubmit = async () => {
         try {
           const response = await axios.post(
-            'http://localhost:8000/api/setkurirsatuan',
+            `${BASE_URL}/api/setkurirsatuan`,
             {
               id_kurir: selectedKurir,
               select: selectedBarang,
@@ -53,7 +54,7 @@ function DashboardAdminPerorang() {
 
     useEffect(() => {
         if (token) {
-            axios.get('http://localhost:8000/api/getkuriradmindaerah', {
+            axios.get(`${BASE_URL}/api/getkuriradmindaerah`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -118,7 +119,7 @@ function CardAdminPerorang({ handleCheckboxChange , searchTerm = ''}) {
   
     useEffect(() => {
         if (token) {
-            axios.get('http://localhost:8000/api/listdaerahsatuan', {
+            axios.get(`${BASE_URL}/api/listdaerahsatuan`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

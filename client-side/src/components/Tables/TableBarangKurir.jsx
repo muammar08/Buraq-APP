@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import '../../css/style.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import BASE_URL from '../../config';
 
 function TableBarangKurir() {
   const [selectedKurir, setSelectedKurir] = useState(null);
@@ -32,7 +33,7 @@ function TableBarangKurir() {
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/setkurir',
+        `${BASE_URL}/api/setkurir`,
         {
           id_kurir: selectedKurir,
           select: selectedBarang,
@@ -66,12 +67,12 @@ function TableBarangKurir() {
     if (token) {
       axios
         .all([
-          axios.get('http://localhost:8000/api/listforkurir', {
+          axios.get(`${BASE_URL}/api/listforkurir`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }),
-          axios.get('http://localhost:8000/api/getkurir', {
+          axios.get(`${BASE_URL}/api/getkurir`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
