@@ -21,6 +21,7 @@ function CardKurir({searchTerm = ''}) {
       axios.get(`${BASE_URL}/api/listbarangkurir`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "69420",
         },
       })
         .then((response) => {

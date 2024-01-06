@@ -21,6 +21,7 @@ function InputBarangPerorang() {
       axios.get(`${BASE_URL}/api/getsuplier`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "ngrok-skip-browser-warning": "69420",
           },
         })
         .then((response) => {

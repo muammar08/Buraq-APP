@@ -34,7 +34,7 @@ function TopNavbar({ setSearchTerm }) {
           <Col className="">
             <div>
               <input
-                size={27}
+                size={20}
                 className="rounded-pill border-0 p-2"
                 name="search"
                 type="text"

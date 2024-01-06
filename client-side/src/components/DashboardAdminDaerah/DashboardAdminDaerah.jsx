@@ -58,6 +58,7 @@ function DashboardAdminDaerah() {
             axios.get(`${BASE_URL}/api/getkuriradmindaerah`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "ngrok-skip-browser-warning": "69420",
                 },
             })
                 .then((response) => {
@@ -129,6 +130,7 @@ function CardAdminDaerah({ handleCheckboxChange , searchTerm =''}) {
             axios.get(`${BASE_URL}/api/listdaerah`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "ngrok-skip-browser-warning": "69420",
                 },
             })
                 .then((response) => {

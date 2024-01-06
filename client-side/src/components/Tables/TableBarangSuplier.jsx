@@ -20,6 +20,7 @@ function TableBarangSuplier({title}) {
       axios.get(`${BASE_URL}/api/listbarang`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "69420",
         },
       })
       .then((response) => {

@@ -23,6 +23,7 @@ function TableDaftarAdmin(){
           axios.get(`${BASE_URL}/api/getadmin`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "69420",
             },
           })
             .then((response) => {

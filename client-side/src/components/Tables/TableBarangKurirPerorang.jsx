@@ -70,11 +70,13 @@ function TableBarangKurir() {
           axios.get(`${BASE_URL}/api/listforkurirsatuan`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "69420",
             },
           }),
           axios.get(`${BASE_URL}/api/getkurir`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "69420",
             },
           }),
         ])

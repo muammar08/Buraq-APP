@@ -15,6 +15,7 @@ function CardSupplier({ searchTerm = '' }) {
             axios.get(`${BASE_URL}/api/listbarangsuplier`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "ngrok-skip-browser-warning": "69420",
                 },
             })
                 .then((response) => {

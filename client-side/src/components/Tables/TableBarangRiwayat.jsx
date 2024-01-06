@@ -22,6 +22,7 @@ function TableBarangRiwayat({title}) {
       axios.get(`${BASE_URL}/api/riwayat`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "ngrok-skip-browser-warning": "69420",
         },
       })
       .then((response) => {

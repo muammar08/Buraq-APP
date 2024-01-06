@@ -57,6 +57,7 @@ function DashboardAdminPerorang() {
             axios.get(`${BASE_URL}/api/getkuriradmindaerah`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "ngrok-skip-browser-warning": "69420",
                 },
             })
                 .then((response) => {
@@ -122,6 +123,7 @@ function CardAdminPerorang({ handleCheckboxChange , searchTerm = ''}) {
             axios.get(`${BASE_URL}/api/listdaerahsatuan`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "ngrok-skip-browser-warning": "69420",
                 },
             })
                 .then((response) => {

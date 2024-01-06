@@ -14,9 +14,9 @@ function DaftarKurir() {
           window.location.href = '/';
         } else {
           axios.get(`${BASE_URL}/api/getuser`, {
-            
             headers: {
               Authorization: `Bearer ${token}`,
+              "ngrok-skip-browser-warning": "69420",
             },
           })
             .then((response) => {
