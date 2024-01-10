@@ -13,6 +13,7 @@ import DaftarKurir from './components/DashboardAdmin/DaftarKurir';
 import DaftarSuplier from './components/DashboardAdmin/DaftarSuplier';
 import DaftarAdmin from './components/DashboardAdmin/DaftarAdmin';
 import LandingPage from './components/LandingPage/LandingPage';
+import DaftarBarangSemua from './components/DashboardAdmin/DaftarBarangSemua';
 import DaftarBarangSuplier from './components/DashboardAdmin/DaftarBarangSuplier';
 import DaftarBarangPerorang from './components/DashboardAdmin/DaftarBarangPerorang';
 import InputBarangSuplier from './components/DashboardAdmin/InputBarangSuplier';
@@ -38,6 +39,7 @@ function App() {
             <Route path="/daftarKurir" element={<DaftarKurir />} />
             <Route path="/daftarSuplier" element={<DaftarSuplier />} />
             <Route path="/daftarAdmin" element={<DaftarAdmin />} />
+            <Route path="/daftarBarangSemua" element={<DaftarBarangSemua />} />
             <Route path="/daftarBarangSuplier" element={<DaftarBarangSuplier />} />
             <Route path="/daftarBarangPerorang" element={<DaftarBarangPerorang />} />
             <Route path="/inputBarangSuplier" element={<InputBarangSuplier />} />

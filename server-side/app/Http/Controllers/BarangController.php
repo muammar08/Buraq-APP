@@ -49,6 +49,22 @@ class BarangController extends Controller
         ], 200);
     }
 
+    public function adminFullData() {
+
+        $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
+                    ->whereNull('id_kurir')
+                    ->get()->toArray();
+
+        $satuan = BarangSatuan::whereNull('id_kurir')->get()->toArray();
+
+        $fullData = array_merge($barang, $satuan);
+
+        return response()->json([
+            'success' => true,
+            'data' => $fullData
+        ], 200);
+    }
+
     public function pickKurir(Barang $barang) {
 
         $barang = Barang::whereNull('id_kurir')->with(['suplier:id_suplier,nama_suplier'])->get();

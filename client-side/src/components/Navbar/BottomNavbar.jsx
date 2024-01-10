@@ -35,6 +35,7 @@ function BottomNavbar({ show, onHide, setSearchTerm }) {
         // Handle the logout logic here, e.g., clearing user session, redirecting, etc.
         Swal.fire('Logged out!', '', 'success');
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         window.location.href = '/';
       }
     });

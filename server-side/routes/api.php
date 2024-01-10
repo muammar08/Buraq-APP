@@ -32,6 +32,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('registerkurir', [AuthController::class, 'registerKurir']);
     Route::post('registersuplier', [AuthController::class, 'registerSuplier']);
     Route::post('registeradmin', [AuthController::class, 'registerAdmin']);
+    Route::get('listdata', [BarangController::class, 'adminFullData']);
     Route::get('listbarang', [BarangController::class, 'adminDash']);
     Route::get('listbarangsatuan', [BarangController::class, 'adminDashSatuan']);
     Route::get('getsuplier', [SuplierController::class, 'getSuplier']);

@@ -47,6 +47,7 @@ const Sidebar = () => {
         {isSidebarOpen && (
           <div>
               <ul className="list-unstyled ps-0">
+                  <NavLink to='/daftarBarangSemua'><p className='mt-3 ps-4 bi-truck text-whites'>&ensp; List Barang</p></NavLink>
                   <div>
                       <NavLink className="mb-1 text-black" onClick={toggleCollapse1}>
                       {isCollapsed1 ? <div className="bi-caret-down container text-whites rounded-end ps-4"> Daftar Barang </div> : <div className="bi-caret-right container text-whites ps-4"> Daftar Barang </div>}
