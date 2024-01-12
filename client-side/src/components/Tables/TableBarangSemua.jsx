@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Tab, Button, FormSelect } from "react-bootstrap";
-import Select from "react-select";
 import Table from "react-bootstrap/Table";
 import "../../css/style.css";
 import axios from "axios";
 import BASE_URL from "../../config";
+import jsPDF from "jspdf";
+import 'jspdf-autotable';
 
 function TableBarangSemua({title}) {
 
@@ -108,12 +109,36 @@ function TableBarangSemua({title}) {
         searchTable();
     }, [search]);
 
+    const generatePDF = () => {
+        const pdfDoc = new jsPDF();
+
+        const tableColumnWidths = [50, 30, 80]; // Lebar kolom tabel
+
+        pdfDoc.autoTable({
+        head: ['No.', 'Pengirim', 'Penerima', 'Jumlah Coly', 'Jumlah Harga', 'Ket.'], // Header tabel
+        body:  data.map((item, index) => {
+            return [
+            index + 1,
+            item.suplier ? item.suplier.nama_suplier : 'Barang Per Orang',
+            item.nama_penerima,
+            item.jumlah_barang,
+            item.harga_barang,
+            item.keterangan,
+            ];
+        }),
+        startY: 10, // Koordinat y untuk posisi tabel
+        columnStyles: { 0: { cellWidth: tableColumnWidths[0] }, 1: { cellWidth: tableColumnWidths[1] }, 2: { cellWidth: tableColumnWidths[2] } },
+        });
+
+        pdfDoc.save('output.pdf');
+      };
+
     return (
         <div>
             <Container className='mt-4'>
                 <Row className='mb-3'>
                     <Col xs={8}><h2 className='text-black'>{title}</h2></Col>
-                    <Col xs={4} className='d-flex justify-content-end'><Button className='m-1'>Print Pdf</Button></Col>
+                    <Col xs={4} className='d-flex justify-content-end'><Button className='m-1' onClick={generatePDF}>Print Pdf</Button></Col>
                 </Row>
                 <Row>
                     <Col>

@@ -214,6 +214,11 @@ class BarangController extends Controller
         }
     }
 
+    public function printRepasBarang() {
+
+        
+    }
+
     /**
      * Display the specified resource.
      *
