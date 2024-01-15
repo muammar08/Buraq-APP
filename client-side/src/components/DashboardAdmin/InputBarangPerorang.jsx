@@ -37,6 +37,7 @@ function InputBarangPerorang() {
     const [namaBarang, setNamaBarang] = useState('');
     const [jumlahBarang, setJumlahBarang] = useState('');
     const [namaPenerima, setNamaPenerima] = useState('');
+    const [namaPengirim, setNamaPengirim] = useState('');
     const [nohpPenerima, setNohpPenerima] = useState('');
     const [alamatPenerima, setAlamatPenerima] = useState('');
     const [noResiSatuan, setNoResiSatuan] = useState();
@@ -55,6 +56,7 @@ function InputBarangPerorang() {
                 namaBarang: namaBarang,
                 jumlahBarang: jumlahBarang,
                 namaPenerima: namaPenerima,
+                namaPengirim: namaPengirim,
                 alamatPenerima: alamatPenerima,
                 nohpPenerima: nohpPenerima,
                 pembayaran: pembayaran,
@@ -82,6 +84,7 @@ function InputBarangPerorang() {
         setNamaBarang('');
         setJumlahBarang('');
         setNamaPenerima('');
+        setNamaPengirim('');
         setNohpPenerima('');
         setAlamatPenerima('');
         setSelectedDaerah('');
@@ -178,6 +181,7 @@ function InputBarangPerorang() {
                 </Row>
                 
                 <MDBInput className="mb-4" label='Alamat Penerima' id='alamatPenerima' type='text' onChange={(e) => setAlamatPenerima(e.target.value)}/>
+                <MDBInput className="mb-4" label='Nama Pengirim' id='namaPengirim' type='text' onChange={(e) => setNamaPengirim(e.target.value)}/>
                 <Select
                     options={daerahOptions}
                     className='mb-4'

@@ -17,6 +17,7 @@ class BarangSatuan extends Model
         'nama_barang',
         'jumlah_barang',
         'nama_penerima',
+        'nama_pengirim',
         'alamat_penerima',
         'nohp_penerima',
         'daerah_satuan',

@@ -174,6 +174,7 @@ class BarangController extends Controller
             'nama_barang'     => $request->namaBarang,
             'jumlah_barang'   => $request->jumlahBarang,
             'nama_penerima'   => $request->namaPenerima,
+            'nama_pengirim'   => $request->namaPengirim,
             'alamat_penerima' => $request->alamatPenerima,
             'nohp_penerima'   => $request->nohpPenerima,
             'daerah_satuan'   => $request->daerahSatuan,
@@ -186,6 +187,7 @@ class BarangController extends Controller
             'nama_barang'     => 'required|string',
             'jumlah_barang'   => 'required|string',
             'nama_penerima'   => 'required|string',
+            'nama_pengirim'   => 'required|string',
             'alamat_penerima' => 'required|string',
             'pembayaran'      => 'required|string',
             'daerah_satuan'   => 'required|string'

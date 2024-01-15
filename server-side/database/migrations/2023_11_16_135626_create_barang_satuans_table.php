@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nama_barang', 100);
             $table->string('jumlah_barang', 100);
             $table->string('nama_penerima', 100);
+            $table->string('nama_pengirim', 100);
             $table->string('alamat_penerima', 100);
             $table->string('nohp_penerima', 100)->nullable();
             $table->string('daerah_satuan', 100);
