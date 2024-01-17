@@ -68,4 +68,76 @@ class AdminController extends Controller
             'data' => $barangSatuan,
         ], 200);
     }
+
+    public function adminDaerahUpFoto(Request $request, Barang $barang) {
+        $authenticatedAdmin = Auth::user();
+        $admin = Admin::where('id_user', $authenticatedAdmin->id)->select('id_admin')->first(); // Use first() instead of get()
+
+        $validator = Validator::make($request->all(), [
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:5000',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+    
+        $barang = Barang::where('id_barang', $barang->id_barang)->first();
+    
+        if (!$barang) {
+            return response()->json(['message' => 'Barang not found'], 400);
+        }
+    
+        $uploadFile = $request->file('foto');
+    
+        $filename = time() . '.' . $uploadFile->getClientOriginalExtension();
+    
+        $uploadFile->move(public_path() . '/img/', $filename);
+    
+        $barang->update([
+            'foto' => $filename,
+            'status' => 'berhasil',
+            'id_admin' => $admin->id_admin,
+        ]);
+    
+        return response()->json([
+            'message' => 'Barang updated successfully',
+            'data' => $barang,
+        ], 200);
+    } 
+    
+    public function adminDaerahUpFotoSatuan(Request $request, BarangSatuan $satuan) {
+        $authenticatedAdmin = Auth::user();
+        $admin = Admin::where('id_user', $authenticatedAdmin->id)->select('id_admin')->first(); // Use first() instead of get()
+
+        $validator = Validator::make($request->all(), [
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:5000',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+    
+        $satuan = BarangSatuan::where('id_satuan', $satuan->id_satuan)->first();
+    
+        if (!$satuan) {
+            return response()->json(['message' => 'Barang not found'], 400);
+        }
+    
+        $uploadFile = $request->file('foto');
+    
+        $filename = time() . '.' . $uploadFile->getClientOriginalExtension();
+    
+        $uploadFile->move(public_path() . '/img/', $filename);
+    
+        $satuan->update([
+            'foto' => $filename,
+            'status' => 'berhasil',
+            'id_admin' => $admin->id_admin,
+        ]);
+    
+        return response()->json([
+            'message' => 'Barang updated successfully',
+            'data' => $satuan,
+        ], 200);
+    }  
 }

@@ -13,6 +13,7 @@ class Barang extends Model
     protected $fillable = [
         'id_suplier',
         'id_kurir',
+        'id_admin',
         'no_resi',
         'nama_barang',
         'jumlah_barang',
@@ -32,5 +33,10 @@ class Barang extends Model
     public function kurir()
     {
         return $this->belongsTo(Kurir::class, 'id_kurir', 'id_kurir');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class, 'id_admin', 'id_admin');
     }
 }

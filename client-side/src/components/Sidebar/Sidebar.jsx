@@ -97,6 +97,7 @@ const Sidebar = () => {
                   </div>
               
                   <NavLink to='/riwayat'><p className='mt-3 ps-4 bi-calendar2-check text-whites'>&ensp; Riwayat</p></NavLink>
+                  <NavLink to='/riwayatperorang'><p className='mt-3 ps-4 bi-calendar2-check text-whites'>&ensp; Riwayat Per Orang</p></NavLink>
                   <NavLink to='/register'><p className='mt-3 ps-4 bi-person-add text-whites'>&ensp; Register</p></NavLink>
                   <li className='border-top mt-4'></li>  
               </ul>

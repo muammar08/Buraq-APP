@@ -5,7 +5,7 @@ import '../../css/style.css';
 import axios from 'axios';
 import BASE_URL from '../../config';
 
-function TableBarangRiwayat({title}) {
+function TableBarangRiwayatSatuan({title}) {
 
   const token = localStorage.getItem('token');
   const [search, setSearch] = useState('');
@@ -19,7 +19,7 @@ function TableBarangRiwayat({title}) {
     if (!token) {
       window.location.href = '/';
     } else {
-      axios.get(`${BASE_URL}/api/riwayat`, {
+      axios.get(`${BASE_URL}/api/riwayatsatuan`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "ngrok-skip-browser-warning": "69420",
@@ -49,8 +49,7 @@ function TableBarangRiwayat({title}) {
         const filteredData = data.filter((item) => {
             return (
                 item.nama_barang.toLowerCase().includes(input) || // Sesuaikan dengan kolom yang ingin Anda cari
-                item.nama_penerima.toLowerCase().includes(input) || // Sesuaikan dengan kolom yang ingin Anda cari
-                item.suplier.nama_suplier.toLowerCase().includes(input)
+                item.nama_penerima.toLowerCase().includes(input) // Sesuaikan dengan kolom yang ingin Anda cari
             );
         });
         setSearchResults(filteredData);
@@ -70,7 +69,7 @@ function TableBarangRiwayat({title}) {
       setShowModal(false);
     }
 
-    const selectedItem = data.find(item => item.id_barang === selectedPhoto);
+    const selectedItem = data.find(item => item.id_satuan === selectedPhoto);
 
     const urlGambar = selectedItem?.foto ? `${BASE_URL}/img/${selectedItem.foto}` : null;
 
@@ -101,7 +100,6 @@ function TableBarangRiwayat({title}) {
                 <th>Nama Penerima</th>
                 <th>Alamat Penerima</th>
                 <th>No Hp Penerima</th>
-                <th>Nama Perusahaan</th>
                 <th>Foto</th>
                 <th>Kurir</th>
               </tr>
@@ -111,13 +109,12 @@ function TableBarangRiwayat({title}) {
                 [...searchResults].reverse().map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.no_resi}</td>
+                    <td>{item.no_resi_satuan}</td>
                     <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                     <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                     <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
                     <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
                     <td>{item.nohp_penerima}</td>
-                    <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
                     <td>
                       <a href="#" onClick={() => handleShowModal(item.id_barang)}>{capitalizeFirstLetter(item.foto)}</a>
                     </td>
@@ -129,13 +126,12 @@ function TableBarangRiwayat({title}) {
                     [...data].reverse().map((item, index) => (
                         <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{item.no_resi}</td>
+                        <td>{item.no_resi_satuan}</td>
                         <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                         <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                         <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
                         <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
                         <td>{item.nohp_penerima}</td>
-                        <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
                         <td className='text-dark'>
                           <a className='text-dark' href="#" onClick={() => handleShowModal(item.id_barang)}>{capitalizeFirstLetter(item.foto)}</a>
                         </td>
@@ -173,4 +169,4 @@ function TableBarangRiwayat({title}) {
   );
 }
 
-export default TableBarangRiwayat;
+export default TableBarangRiwayatSatuan;

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id('id_barang');
             $table->unsignedBigInteger('id_suplier');
             $table->unsignedBigInteger('id_kurir')->nullable();
+            $table->unsignedBigInteger('id_admin')->nullable();
             $table->integer('no_resi')->unique();
             $table->string('nama_barang', 100);
             $table->string('jumlah_barang', 100);
@@ -30,6 +31,7 @@ return new class extends Migration
 
             $table->foreign('id_suplier')->references('id_suplier')->on('supliers');
             $table->foreign('id_kurir')->references('id_kurir')->on('kurirs');
+            $table->foreign('id_admin')->references('id_admin')->on('admins');
         });
     }
 

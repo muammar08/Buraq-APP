@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('barang_satuans', function (Blueprint $table) {
             $table->id('id_satuan');
             $table->unsignedBigInteger('id_kurir')->nullable();
+            $table->unsignedBigInteger('id_admin')->nullable();
             $table->integer('no_resi_satuan')->unique();
             $table->string('nama_barang', 100);
             $table->string('jumlah_barang', 100);
@@ -31,6 +32,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('id_kurir')->references('id_kurir')->on('kurirs');
+            $table->foreign('id_admin')->references('id_admin')->on('admins');
         });
     }
 

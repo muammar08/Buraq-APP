@@ -9,6 +9,7 @@ import DashboardSupplier from './components/DashboardSupplier/DashboardSupplier'
 import Kurir from './components/DashboardAdmin/Kurir';
 import Register from './components/DashboardAdmin/Register';
 import Riwayat from './components/DashboardAdmin/Riwayat';
+import RiwayatSatuan from './components/DashboardAdmin/RiwayatSatuan';
 import DaftarKurir from './components/DashboardAdmin/DaftarKurir';
 import DaftarSuplier from './components/DashboardAdmin/DaftarSuplier';
 import DaftarAdmin from './components/DashboardAdmin/DaftarAdmin';
@@ -36,6 +37,7 @@ function App() {
             <Route path="/dashboardAdmin" element={<DashboardAdmin />} />
             <Route path="/register" element={<Register />} />
             <Route path="/riwayat" element={<Riwayat />} />
+            <Route path="/riwayatperorang" element={<RiwayatSatuan />} />
             <Route path="/daftarKurir" element={<DaftarKurir />} />
             <Route path="/daftarSuplier" element={<DaftarSuplier />} />
             <Route path="/daftarAdmin" element={<DaftarAdmin />} />

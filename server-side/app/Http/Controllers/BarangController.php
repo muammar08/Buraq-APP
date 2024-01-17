@@ -99,7 +99,7 @@ class BarangController extends Controller
 
     public function barangDone() {
         $barang = Barang::where('status', 'berhasil')
-            ->with(['suplier:id_suplier,nama_suplier', 'kurir:id_kurir,nama_kurir'])
+            ->with(['suplier:id_suplier,nama_suplier', 'kurir:id_kurir,nama_kurir', 'admin:id_admin,admin_daerah'])
             ->get();
 
         if ($barang->isEmpty()) {
@@ -111,6 +111,23 @@ class BarangController extends Controller
         return response()->json([
             'success' => true,
             'data' => $barang
+        ], 200);
+    }
+
+    public function barangDoneSatuan() {
+        $satuan = BarangSatuan::where('status', 'berhasil')
+            ->with(['kurir:id_kurir,nama_kurir', 'admin:id_admin,admin_daerah'])
+            ->get();
+
+        if ($satuan->isEmpty()) {
+            return response()->json([
+                'message' => 'Barang not found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $satuan
         ], 200);
     }
 

@@ -39,6 +39,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('getadmin', [AdminController::class, 'getAdmin']);
     Route::get('listdaerah', [AdminController::class, 'adminDaerah']);
     Route::get('listdaerahsatuan', [AdminController::class, 'adminDaerahSatuan']);
+    Route::post('adminupfoto/{barang}', [AdminController::class, 'adminDaerahUpFoto']);
+    Route::post('adminupfotosatuan/{satuan}', [AdminController::class, 'adminDaerahUpFotoSatuan']);
     Route::post('createbarang', [BarangController::class, 'store']);
     Route::post('createbarangsatuan', [BarangController::class, 'storeSatuan']);
     Route::get('getkurir', [KurirController::class, 'getKurir']);
@@ -48,6 +50,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('setkurir', [KurirController::class, 'setKurir']);
     Route::post('setkurirsatuan', [KurirController::class, 'setKurirSatuan']);
     Route::get('riwayat', [BarangController::class, 'barangDone']);
+    Route::get('riwayatsatuan', [BarangController::class, 'barangDoneSatuan']);
 
     Route::get('listbarangkurir', [KurirController::class, 'kurirDash']);
     Route::post('upfoto/{barang}', [KurirController::class, 'uploadFoto']);
