@@ -41,6 +41,7 @@ class AdminController extends Controller
             ->join('admins', 'barangs.daerah_barang', '=', 'admins.daerah')
             ->where('admins.id_user', $authenticatedAdmin->id)
             ->whereNull('barangs.id_kurir')
+            ->whereNull('barangs.foto')
             ->select('barangs.*')
             ->get()
             ->toArray();
@@ -60,6 +61,7 @@ class AdminController extends Controller
             ->join('admins', 'barang_satuans.daerah_satuan', '=', 'admins.daerah')
             ->where('admins.id_user', $authenticatedAdmin->id)
             ->whereNull('barang_satuans.id_kurir')
+            ->whereNull('barang_satuans.foto')
             ->select('barang_satuans.*')
             ->get()->toArray();
 
