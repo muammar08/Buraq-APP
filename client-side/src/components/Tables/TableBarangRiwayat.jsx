@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Container, Modal, Row, Card } from 'react-bootstrap';
+import Select from "react-select";
 import Table from 'react-bootstrap/Table';
 import '../../css/style.css';
 import axios from 'axios';
@@ -13,6 +14,7 @@ function TableBarangRiwayat({title}) {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [selectedDaerah, setSelectedDaerah] = useState('');
   
 
   useEffect (() => {
@@ -43,42 +45,84 @@ function TableBarangRiwayat({title}) {
     });
   }
 
+  const handleShowModal = (id) => {
+    setSelectedPhoto(id);
+    setShowModal(true);
+  }
 
-    function searchTable() {
-        const input = search.toLowerCase();
-        const filteredData = data.filter((item) => {
-            return (
-                item.nama_barang.toLowerCase().includes(input) || // Sesuaikan dengan kolom yang ingin Anda cari
-                item.nama_penerima.toLowerCase().includes(input) || // Sesuaikan dengan kolom yang ingin Anda cari
-                item.suplier.nama_suplier.toLowerCase().includes(input)
-            );
-        });
-        setSearchResults(filteredData);
-    }
+  const handleCloseModal = () => {
+    setSelectedPhoto(null);
+    setShowModal(false);
+  }
 
-    useEffect(() => {
-        searchTable();
-    }, [search]);
+  const selectedItem = data.find(item => item.id_barang === selectedPhoto);
 
-    const handleShowModal = (id) => {
-      setSelectedPhoto(id);
-      setShowModal(true);
-    }
+  const urlGambar = selectedItem?.foto ? `${BASE_URL}/img/${selectedItem.foto}` : null;
 
-    const handleCloseModal = () => {
-      setSelectedPhoto(null);
-      setShowModal(false);
-    }
+  const daerahOptions = [
+    { label: 'Kabupaten Aceh Barat', value: 'Kabupaten Aceh Barat' },
+    { label: 'Kabupaten Aceh Barat Daya', value: 'Kabupaten Aceh Barat Daya' },
+    { label: 'Kabupaten Aceh Besar', value: 'Kabupaten Aceh Besar' },
+    { label: 'Kabupaten Aceh Jaya', value: 'Kabupaten Aceh Jaya' },
+    { label: 'Kabupaten Aceh Selatan', value: 'Kabupaten Aceh Selatan' },
+    { label: 'Kabupaten Aceh Singkil', value: 'Kabupaten Aceh Singkil' },
+    { label: 'Kabupaten Aceh Tamiang', value: 'Kabupaten Aceh Tamiang' },
+    { label: 'Kabupaten Aceh Tengah', value: 'Kabupaten Aceh Tengah' },
+    { label: 'Kabupaten Aceh Tenggara', value: 'Kabupaten Aceh Tenggara' },
+    { label: 'Kabupaten Aceh Timur', value: 'Kabupaten Aceh Timur' },
+    { label: 'Kabupaten Aceh Utara', value: 'Kabupaten Aceh Utara' },
+    { label: 'Kabupaten Bener Meriah', value: 'Kabupaten Bener Meriah' },
+    { label: 'Kabupaten Bireuen', value: 'Kabupaten Bireuen' },
+    { label: 'Kabupaten Gayo Lues', value: 'Kabupaten Gayo Lues' },
+    { label: 'Kabupaten Nagan Raya', value: 'Kabupaten Nagan Raya' },
+    { label: 'Kabupaten Pidie', value: 'Kabupaten Pidie' },
+    { label: 'Kabupaten Pidie Jaya', value: 'Kabupaten Pidie Jaya' },
+    { label: 'Kabupaten Simeulue', value: 'Kabupaten Simeulue' },
+    { label: 'Kota Banda Aceh', value: 'Kota Banda Aceh' },
+    { label: 'Kota Langsa', value: 'Kota Langsa' },
+    { label: 'Kota Lhokseumawe', value: 'Kota Lhokseumawe' },
+    { label: 'Kota Sabang', value: 'Kota Sabang' },
+    { label: 'Kota Subulussalam', value: 'Kota Subulussalam' },
+  ];
+  
+  const handleDaerahChange = (selectedOption) => {
+      setSelectedDaerah(selectedOption.value);
+      searchTable(); 
+  };
 
-    const selectedItem = data.find(item => item.id_barang === selectedPhoto);
+  const customStyles = {
+    control: (provided) => ({
+        ...provided,
+        minWidth: 200,
+        margin: '0px 0',
+    }),
+    menu: (provided) => ({
+      ...provided,
+      zIndex: 9999, // Adjust the z-index to make sure it appears above other elements
+    }),
+  };
 
-    const urlGambar = selectedItem?.foto ? `${BASE_URL}/img/${selectedItem.foto}` : null;
+  function searchTable() {
+    const input = search.toLowerCase();
+    const filteredData = data.filter((item) => {
+      return (
+        (item.nama_barang.toLowerCase().includes(input) ||
+          item.nama_penerima.toLowerCase().includes(input)) &&
+        (!selectedDaerah || item.daerah_barang === selectedDaerah)
+      );
+    });
+    setSearchResults(filteredData);
+  }
+
+  useEffect(() => {
+    searchTable();
+  }, [search, selectedDaerah]);
 
   return (
     <div>
       <Container className='p-5'>
         <Row>
-          <Col xs={8}><h2>{title}</h2></Col>
+          <Col xs={5}><h2>{title}</h2></Col>
           <Col>
             <input
               className="form-control"
@@ -87,6 +131,18 @@ function TableBarangRiwayat({title}) {
               aria-label="Search"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+            />
+          </Col>
+          <Col >
+            <Select
+              options={daerahOptions}
+              className='mb-4'
+              value={selectedDaerah}
+              onChange={handleDaerahChange}
+              placeholder="Pilih Daerah"
+              styles={customStyles}
+              isClearable
+              isSearchable
             />
           </Col>
         </Row>
@@ -115,7 +171,7 @@ function TableBarangRiwayat({title}) {
                     <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                     <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                     <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
-                    <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
+                    <td>{item.daerah_barang}</td>
                     <td>{item.nohp_penerima}</td>
                     <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
                     <td>
@@ -133,7 +189,7 @@ function TableBarangRiwayat({title}) {
                         <td>{capitalizeFirstLetter(item.nama_barang)}</td>
                         <td>{capitalizeFirstLetter(item.jumlah_barang)}</td>
                         <td>{capitalizeFirstLetter(item.nama_penerima)}</td>
-                        <td>{capitalizeFirstLetter(item.alamat_penerima)}</td>
+                        <td>{item.daerah_barang}</td>
                         <td>{item.nohp_penerima}</td>
                         <td>{capitalizeFirstLetter(item.suplier.nama_suplier)}</td>
                         <td className='text-dark'>

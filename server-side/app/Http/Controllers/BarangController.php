@@ -31,6 +31,7 @@ class BarangController extends Controller
     {
         $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
             ->whereNull('id_kurir')
+            ->whereNull('id_admin')
             ->get()->toArray();
 
         return response()->json([
@@ -41,7 +42,7 @@ class BarangController extends Controller
 
     public function adminDashSatuan() {
 
-        $satuan = BarangSatuan::whereNull('id_kurir')->get()->toArray();
+        $satuan = BarangSatuan::whereNull('id_kurir')->whereNull('id_admin')->get()->toArray();
 
         return response()->json([
             'success' =>true,
@@ -52,10 +53,10 @@ class BarangController extends Controller
     public function adminFullData() {
 
         $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
-                    ->whereNull('id_kurir')
+                    ->whereNull('foto')
                     ->get()->toArray();
 
-        $satuan = BarangSatuan::whereNull('id_kurir')->get()->toArray();
+        $satuan = BarangSatuan::whereNull('foto')->get()->toArray();
 
         $fullData = array_merge($barang, $satuan);
 
@@ -67,7 +68,7 @@ class BarangController extends Controller
 
     public function pickKurir(Barang $barang) {
 
-        $barang = Barang::whereNull('id_kurir')->with(['suplier:id_suplier,nama_suplier'])->get();
+        $barang = Barang::whereNull('id_kurir')->whereNull('id_admin')->with(['suplier:id_suplier,nama_suplier'])->get();
 
         if (!$barang) {
             return response()->json([
@@ -83,7 +84,7 @@ class BarangController extends Controller
 
     public function pickKurirSatuan(BarangSatuan $barangSatuans) {
 
-        $barangSatuans = BarangSatuan::whereNull('id_kurir')->get();
+        $barangSatuans = BarangSatuan::whereNull('id_kurir')->whereNull('id_admin')->get();
 
         if (!$barangSatuans) {
             return response()->json([
