@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row, Tab, Button, FormSelect } from "react-bootstrap";
+import { Col, Container, Row, Tab, Button, Form } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
+import Select from "react-select";
 import "../../css/style.css";
 import axios from "axios";
 import BASE_URL from "../../config";
@@ -63,15 +64,15 @@ function TableBarangSemua({title}) {
         { label: 'Kota Sabang', value: 'Kota Sabang' },
         { label: 'Kota Subulussalam', value: 'Kota Subulussalam' },
     ];
-    
-    const handleDaerahChange = (selectedOption) => {
-        setSelectedDaerah(selectedOption);
-    };
 
     function capitalizeFirstLetter(str) {
         return str.toLowerCase().replace(/^(.)|\s+(.)/g, function ($1) {
             return $1.toUpperCase();
         });
+    }
+
+    function capitalizeAllLetters(str) {
+        return str.toUpperCase();
     }
 
     function formatDate(date) {
@@ -85,29 +86,44 @@ function TableBarangSemua({title}) {
         return `${day}-${month}-${year}`;
     }
 
-    function handleDateChange(date) {
-        setSelectedDate(date);
-        searchTable(date);
-    }
-
-    function searchTable() {
-        const results = data.filter((data) =>
-            data.nama_barang.toLowerCase().includes(search.toLowerCase())
-        );
-        setSearchResults(results);
-    }
-
     const customStyles = {
         control: (provided) => ({
             ...provided,
             minWidth: 200,
             margin: '0px 0',
         }),
+        menu: (provided) => ({
+          ...provided,
+          zIndex: 9999, // Adjust the z-index to make sure it appears above other elements
+        }),
+      };
+
+    const handleDaerahChange = (selectedOption) => {
+        setSelectedDaerah(selectedOption);
     };
 
-    useEffect(() => {
-        searchTable();
-    }, [search]);
+    const handleSearchListBarang = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                `${BASE_URL}/api/barangs/search`,
+                {
+                    plat: search,
+                    daerah_barang: selectedDaerah,
+                    created_at: selectedDate,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            setSearchResults(response.data.data);
+            console.log(response.data.data);
+        } catch (error) {
+            console.error('Error creating barang', error);
+        }
+    };
 
     const generatePDF = () => {
         const pdfDoc = new jsPDF();
@@ -137,8 +153,8 @@ function TableBarangSemua({title}) {
         pdfDoc.setTextColor(0);
         pdfDoc.text('Supir        : ___________________________', textMarginLeft, textMarginTop);
         pdfDoc.text('Hari Tanggal : ' + formatDate(date), textMarginLeft, textMarginTop + 10);
-        pdfDoc.text('BL / BK      : ___________________________', textMarginLeft, textMarginTop + 20);
-        pdfDoc.text('Tujuan       : ___________________________', textMarginLeft, textMarginTop + 30);
+        pdfDoc.text('BL / BK      : ' + capitalizeAllLetters(search), textMarginLeft, textMarginTop + 20);
+        pdfDoc.text('Tujuan       : ' + (selectedDaerah ? selectedDaerah.label : ''), textMarginLeft, textMarginTop + 30);
     
         // Calculate the center position for the text "REPAS BARANG"
         const text = 'REPAS BARANG';
@@ -162,9 +178,9 @@ function TableBarangSemua({title}) {
             columnStyles: { halign: 'center', fillColor: [255, 255, 255] },
             margin: { top: 70 },
             head: [['No.', 'Pengirim', 'Penerima', 'Jumlah Coly', 'Jumlah Harga', 'Ket.']],
-            body: data.map((item, index) => [
+            body: searchResults.map((item, index) => [
                 index + 1,
-                item.suplier || item.nama_pengirim,
+                item.suplier?.nama_suplier || item.nama_pengirim || '',
                 item.nama_penerima,
                 item.jumlah_barang,
                 item.harga || '',
@@ -188,35 +204,46 @@ function TableBarangSemua({title}) {
                     <Col xs={8}><h2 className='text-black'>{title}</h2></Col>
                     <Col xs={4} className='d-flex justify-content-end'><Button className='m-1' onClick={generatePDF}>Print Pdf</Button></Col>
                 </Row>
-                <Row>
-                    <Col>
-                    <input
-                        className="form-control"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                    />
-                    </Col>
-                    <Col >
-                        <FormSelect>
-                            <option value="">Pilih Daerah</option>
-                            {daerahOptions.map((option, index) => (
-                                <option key={index} value={option.value}>{option.label}</option>
-                            ))}
-                        </FormSelect>
-                    </Col>
-                    <Col >
-                    <input 
-                        className='form-control' 
-                        type='date' 
-                        placeholder='Pilih Tanggal'
-                        value={selectedDate}
-                        onChange={(e) => handleDateChange(e.target.value)}
-                    />
-                    </Col>
-                </Row>
+                <Form onSubmit={handleSearchListBarang}>
+                    <Row>
+                        <Col>
+                        <input
+                            className="form-control"
+                            type="search"
+                            placeholder="Search"
+                            aria-label="Search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        </Col>
+                        <Col>
+                            <Select
+                                options={daerahOptions}
+                                className='mb-4'
+                                value={selectedDaerah}
+                                onChange={handleDaerahChange}
+                                placeholder="Pilih Daerah"
+                                styles={customStyles}
+                                isClearable
+                                isSearchable
+                            />
+                        </Col>
+                        <Col>
+                        <input 
+                            className='form-control' 
+                            type='date' 
+                            placeholder='Pilih Tanggal'
+                            value={selectedDate}
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                        />
+                        </Col>
+                        <Col>
+                            <Button className="fw-bold rounded" type="submit" style={{background : '#1d3557'}}>
+                                Simpan Data
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
                 <div className="mt-3">
                     <Table striped bordered hover>
                         <thead>
@@ -237,7 +264,7 @@ function TableBarangSemua({title}) {
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>
-                                            {data.suplier ? capitalizeFirstLetter(data.suplier.nama_suplier) : 'Barang Per Orang'}
+                                            {data.suplier ? capitalizeFirstLetter(data.suplier.nama_suplier) : 'Barang Per Orang' }
                                         </td>
                                         <td>{formatDate(data.created_at)}</td>
                                         <td>{capitalizeFirstLetter(data.nama_penerima)}</td>

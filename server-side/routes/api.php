@@ -52,6 +52,11 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('riwayat', [BarangController::class, 'barangDone']);
     Route::get('riwayatsatuan', [BarangController::class, 'barangDoneSatuan']);
 
+    Route::prefix('barangs')->group(function () {
+        Route::post('/search', [BarangController::class, 'searchListBarang']);
+        // Add other resourceful routes if needed
+    });
+
     Route::get('listbarangkurir', [KurirController::class, 'kurirDash']);
     Route::post('upfoto/{barang}', [KurirController::class, 'uploadFoto']);
     Route::post('upfotosatuan/{satuan}', [KurirController::class, 'uploadFotoSatuan']);

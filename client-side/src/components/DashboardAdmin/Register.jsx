@@ -285,7 +285,7 @@ function Register() {
                 )}
                 {registrationType === 'Admin Daerah' && (
                     <Form className='pt-3 ps-5 pe-5' onSubmit={handleRegistAdminDaerah}>
-                        <h2>Register Suplier</h2>
+                        <h2>Register Admin</h2>
                         <MDBInput className='mb-4 mt-4' label='Nama Admin Daerah' id='' name='adminDaerah' type='text' onChange={(e)=> setAdminDaerah(e.target.value)}/>
                         <MDBInput className='mb-4' label='Username' id='username' name='username' type='text' onChange={(e) => setUsername(e.target.value)}/>
                         <MDBInput className='mb-4' label='Password' id='password' name='password' type='password' onChange={(e) => setPassword(e.target.value)}/>

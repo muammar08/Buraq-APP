@@ -148,7 +148,8 @@ class BarangController extends Controller
             'nama_penerima'   => $request->namaPenerima,
             'alamat_penerima' => $request->alamatPenerima,
             'nohp_penerima'   => $request->nohpPenerima,
-            'daerah_barang'   => $request->daerahBarang
+            'daerah_barang'   => $request->daerahBarang,
+            'plat'            => $request->plat,
         ];
 
         $validator = Validator::make($data, [
@@ -159,6 +160,7 @@ class BarangController extends Controller
             'nama_penerima'   => 'required|string',
             'alamat_penerima' => 'required|string',
             'daerah_barang'   => 'required|string',
+            'plat'            => 'required|string',
         ]);
 
         if($validator->fails()) {
@@ -196,6 +198,7 @@ class BarangController extends Controller
             'alamat_penerima' => $request->alamatPenerima,
             'nohp_penerima'   => $request->nohpPenerima,
             'daerah_satuan'   => $request->daerahSatuan,
+            'plat'            => $request->plat,
             'pembayaran'      => $request->pembayaran,
             'harga'           => $request->harga
         ];
@@ -208,7 +211,8 @@ class BarangController extends Controller
             'nama_pengirim'   => 'required|string',
             'alamat_penerima' => 'required|string',
             'pembayaran'      => 'required|string',
-            'daerah_satuan'   => 'required|string'
+            'daerah_satuan'   => 'required|string',
+            'plat'            => 'required|string',
         ]);
 
         if($validator->fails()) {
@@ -234,9 +238,46 @@ class BarangController extends Controller
         }
     }
 
-    public function printRepasBarang() {
+    public function searchListBarang(Request $request) {
+        try {
+            // Validate the incoming data
+            $validator = Validator::make($request->all(), [
+                'plat'          => 'required|string',
+                'created_at'    => 'required|date',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
+            }
+    
+            $plat = $request->input('plat');
+            $daerahBarang = $request->input('daerah_barang');
+            $createdAt = $request->input('created_at');
 
-        
+            $barang = Barang::with(['suplier:id_suplier,nama_suplier'])
+                            ->whereNull('foto')
+                            ->where('plat', $plat)
+                            ->where('daerah_barang', $daerahBarang)
+                            ->whereDate('created_at', '=', $createdAt)
+                            ->get()->toArray();
+
+            $satuan = BarangSatuan::whereNull('foto')
+                                ->where('plat', $plat)
+                                ->where('daerah_satuan', $daerahBarang)
+                                ->whereDate('created_at', '=', $createdAt)
+                                ->get()->toArray();
+
+            $finalResult = array_merge($barang, $satuan);
+    
+            return response()->json([
+                'success'  => true,
+                'message'  => 'Barang Get',
+                'data'     => $finalResult,
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle exceptions if any
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

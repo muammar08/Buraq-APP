@@ -22,6 +22,7 @@ class BarangSatuan extends Model
         'alamat_penerima',
         'nohp_penerima',
         'daerah_satuan',
+        'plat',
         'pembayaran',
         'harga',
         'status',

@@ -42,6 +42,7 @@ function InputBarangSuplier() {
     const [nohpPenerima, setNohpPenerima] = useState('');
     const [alamatPenerima, setAlamatPenerima] = useState('');
     const [selectedDaerah, setSelectedDaerah] = useState(null);
+    const [plat, setPlat] = useState('');
 
   const handleSupplierChange = (event) => {
     setSelectedSupplier(event.target.value);
@@ -61,6 +62,7 @@ function InputBarangSuplier() {
                 alamatPenerima: alamatPenerima,
                 namaPerusahaan: selectedSupplier,
                 daerahBarang: selectedDaerah?.value,
+                plat: plat,
             },
             {
                 headers: {
@@ -87,6 +89,7 @@ function InputBarangSuplier() {
         setAlamatPenerima('');
         setSelectedSupplier('');
         setSelectedDaerah('');
+        setPlat('');
 
       
         setTimeout(() => {
@@ -173,7 +176,7 @@ const customStyles = {
                     </Col>
                 </Row>
                 <MDBInput className="mb-4" label='Alamat Penerima' id='alamatPenerima' type='text' onChange={(e) => setAlamatPenerima(e.target.value)}/>
-
+                <MDBInput className="mb-4" label='Plat' id='plat' type='text' onChange={(e) => setPlat(e.target.value)}/>
                 <Form.Select
                     value={selectedSupplier}
                     onChange={handleSupplierChange}

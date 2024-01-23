@@ -21,6 +21,7 @@ class Barang extends Model
         'alamat_penerima',
         'nohp_penerima',
         'daerah_barang',
+        'plat',
         'status',
         'foto',
     ];
